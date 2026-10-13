@@ -376,6 +376,7 @@ export const layout = {
   sidebarWidth: 260,
   phonePreviewWidth: 393,
   phonePreviewHeight: 852,
+  typeSpecimenMinWidth: 200,
 } as const;
 
 export const breakpoints = {

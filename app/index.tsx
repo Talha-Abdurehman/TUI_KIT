@@ -1060,7 +1060,7 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.sm,
   },
   typeBlock: {
-    minWidth: 200,
+    minWidth: theme.layout.typeSpecimenMinWidth,
     marginBottom: theme.spacing.sm,
   },
 });
