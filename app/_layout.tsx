@@ -32,7 +32,25 @@ export default function RootLayout() {
         <Stack.Screen
           name="index"
           options={{
-            title: 'Corporate UI Kit',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="cards"
+          options={{
+            title: 'Cards',
+          }}
+        />
+        <Stack.Screen
+          name="recipients"
+          options={{
+            title: 'Recipients',
+          }}
+        />
+        <Stack.Screen
+          name="payments"
+          options={{
+            title: 'Send Money',
           }}
         />
         <Stack.Screen

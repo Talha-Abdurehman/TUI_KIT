@@ -117,7 +117,7 @@ export const Button: React.FC<ButtonProps> = ({
           paddingHorizontal: currentSize.paddingHorizontal,
           backgroundColor: currentVariant.bg,
           borderColor: currentVariant.border,
-          borderRadius: radius.md,
+          borderRadius: radius.full,
         },
         isFullWidth && styles.fullWidth,
         isDisabled && styles.disabled,
@@ -139,7 +139,7 @@ export const Button: React.FC<ButtonProps> = ({
             children
           ) : (
             <Text
-              variant={currentSize.textVariant}
+              variant="bodyBold"
               style={{ color: currentVariant.text }}
             >
               {label}

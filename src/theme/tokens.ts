@@ -1,17 +1,14 @@
 /**
  * Author: Talha Abdurehman <talhakyle124@gmail.com>
  * Single source of truth for all corporate UI design tokens.
+ * Deconstructed from Wise Design System (fintech bold, borderless, high-clarity).
  * Strictly typed, zero arbitrary values, optimized for Hermes and 60-120 FPS.
  */
 
 import { TextStyle, ViewStyle } from 'react-native';
 
-/**
- * Semantic Color Contract
- * Both light and dark palettes must satisfy this interface 1:1.
- */
 export interface ThemeColors {
-  // Brand & Action
+  // Brand & Action (Wise Electric Lime & Forest Green)
   primary: string;
   primaryLight: string;
   primaryDark: string;
@@ -22,7 +19,7 @@ export interface ThemeColors {
   secondaryDark: string;
   secondaryForeground: string;
 
-  // Background & Elevation Surfaces
+  // Background & Elevation Surfaces (Warm Sage / Ink)
   background: string;
   surface: string;
   surfaceSubtle: string;
@@ -66,119 +63,115 @@ export interface ThemeColors {
 }
 
 export const lightColors: ThemeColors = {
-  // Brand & Action
-  primary: '#0284C7',
-  primaryLight: '#38BDF8',
-  primaryDark: '#0369A1',
-  primaryForeground: '#FFFFFF',
+  // Brand: Signature Wise Electric Lime & Dark Fir / Forest Green
+  primary: '#9FE870',
+  primaryLight: '#B7F28F',
+  primaryDark: '#163300',
+  primaryForeground: '#163300',
 
-  secondary: '#475569',
-  secondaryLight: '#64748B',
-  secondaryDark: '#334155',
+  secondary: '#163300',
+  secondaryLight: '#2E590A',
+  secondaryDark: '#0D1F00',
   secondaryForeground: '#FFFFFF',
 
-  // Background & Surfaces
-  background: '#FFFFFF',
-  surface: '#F8FAFC',
-  surfaceSubtle: '#F1F5F9',
-  surfaceHover: '#E2E8F0',
-  surfaceActive: '#CBD5E1',
+  // Background: Warm Sage Off-white Canvas & Pure White Surfaces
+  background: '#F4F5F2',
+  surface: '#FFFFFF',
+  surfaceSubtle: '#E8EBE6',
+  surfaceHover: '#DFE3DD',
+  surfaceActive: '#D3D8D0',
 
-  // Typography
-  textPrimary: '#0F172A',
-  textSecondary: '#475569',
-  textMuted: '#94A3B8',
+  // Typography: High-contrast Ink
+  textPrimary: '#0E0F0C',
+  textSecondary: '#4A5043',
+  textMuted: '#7D8475',
   textInverse: '#FFFFFF',
 
   // Borders & Dividers
-  border: '#E2E8F0',
-  borderSubtle: '#F1F5F9',
-  borderFocus: '#0284C7',
+  border: '#E2E5DF',
+  borderSubtle: '#ECF0EA',
+  borderFocus: '#163300',
 
   // Status & Feedback
-  success: '#16A34A',
+  success: '#2E7D32',
   successForeground: '#FFFFFF',
-  successSubtle: '#DCFCE7',
+  successSubtle: '#E8F5E9',
 
-  warning: '#D97706',
+  warning: '#E65100',
   warningForeground: '#FFFFFF',
-  warningSubtle: '#FEF3C7',
+  warningSubtle: '#FFF3E0',
 
-  error: '#DC2626',
+  error: '#D32F2F',
   errorForeground: '#FFFFFF',
-  errorSubtle: '#FEE2E2',
+  errorSubtle: '#FFEBEE',
 
-  info: '#2563EB',
+  info: '#0288D1',
   infoForeground: '#FFFFFF',
-  infoSubtle: '#DBEAFE',
+  infoSubtle: '#E1F5FE',
 
   // Interactive States & Special
-  disabled: '#E2E8F0',
-  disabledForeground: '#94A3B8',
-  overlay: 'rgba(15, 23, 42, 0.5)',
-  focusRing: 'rgba(2, 132, 199, 0.35)',
+  disabled: '#E8EBE6',
+  disabledForeground: '#9CA396',
+  overlay: 'rgba(14, 15, 12, 0.65)',
+  focusRing: 'rgba(159, 232, 112, 0.45)',
   transparent: 'transparent',
 };
 
 export const darkColors: ThemeColors = {
-  // Brand & Action
-  primary: '#38BDF8',
-  primaryLight: '#7DD3FC',
-  primaryDark: '#0284C7',
-  primaryForeground: '#090D16',
+  // Brand: Signature Wise Electric Lime
+  primary: '#9FE870',
+  primaryLight: '#B7F28F',
+  primaryDark: '#163300',
+  primaryForeground: '#0E0F0C',
 
-  secondary: '#94A3B8',
-  secondaryLight: '#CBD5E1',
-  secondaryDark: '#64748B',
-  secondaryForeground: '#090D16',
+  secondary: '#E8EBE6',
+  secondaryLight: '#FFFFFF',
+  secondaryDark: '#B8BEB2',
+  secondaryForeground: '#0E0F0C',
 
-  // Background & Surfaces
-  background: '#090D16',
-  surface: '#131B2E',
-  surfaceSubtle: '#1E293B',
-  surfaceHover: '#2A364F',
-  surfaceActive: '#334155',
+  // Background: Deep Charcoal / Ink Canvas
+  background: '#0E0F0C',
+  surface: '#1A1D17',
+  surfaceSubtle: '#252921',
+  surfaceHover: '#31362D',
+  surfaceActive: '#3F463A',
 
-  // Typography
-  textPrimary: '#F8FAFC',
-  textSecondary: '#94A3B8',
-  textMuted: '#64748B',
-  textInverse: '#0F172A',
+  // Typography: Sage Tinted Light
+  textPrimary: '#F4F5F2',
+  textSecondary: '#9CA396',
+  textMuted: '#6D7566',
+  textInverse: '#0E0F0C',
 
   // Borders & Dividers
-  border: '#1E293B',
-  borderSubtle: '#131B2E',
-  borderFocus: '#38BDF8',
+  border: '#2E332A',
+  borderSubtle: '#22261F',
+  borderFocus: '#9FE870',
 
   // Status & Feedback
-  success: '#22C55E',
-  successForeground: '#090D16',
-  successSubtle: '#052E16',
+  success: '#81C784',
+  successForeground: '#0E0F0C',
+  successSubtle: '#1B381E',
 
-  warning: '#F59E0B',
-  warningForeground: '#090D16',
-  warningSubtle: '#451A03',
+  warning: '#FFB74D',
+  warningForeground: '#0E0F0C',
+  warningSubtle: '#3E2405',
 
-  error: '#EF4444',
-  errorForeground: '#FFFFFF',
-  errorSubtle: '#450A0A',
+  error: '#E57373',
+  errorForeground: '#0E0F0C',
+  errorSubtle: '#3B1414',
 
-  info: '#60A5FA',
-  infoForeground: '#090D16',
-  infoSubtle: '#172554',
+  info: '#4FC3F7',
+  infoForeground: '#0E0F0C',
+  infoSubtle: '#0F2C3B',
 
   // Interactive States & Special
-  disabled: '#1E293B',
-  disabledForeground: '#64748B',
-  overlay: 'rgba(0, 0, 0, 0.75)',
-  focusRing: 'rgba(56, 189, 248, 0.35)',
+  disabled: '#252921',
+  disabledForeground: '#6D7566',
+  overlay: 'rgba(0, 0, 0, 0.85)',
+  focusRing: 'rgba(159, 232, 112, 0.45)',
   transparent: 'transparent',
 };
 
-/**
- * Spacing Scale (in points)
- * Enforces systematic margins, paddings, and gaps.
- */
 export const spacing = {
   none: 0,
   xxs: 2,
@@ -191,23 +184,17 @@ export const spacing = {
   xxxl: 64,
 } as const;
 
-/**
- * Border Radii Scale
- */
 export const radius = {
   none: 0,
-  xs: 2,
-  sm: 4,
-  md: 8,
-  lg: 12,
-  xl: 16,
-  xxl: 24,
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  xxl: 32,
   full: 9999,
 } as const;
 
-/**
- * Typography Tokens & Pre-composed Style Presets
- */
 export const typography = {
   size: {
     xs: 12,
@@ -217,6 +204,7 @@ export const typography = {
     xl: 20,
     xxl: 24,
     display: 32,
+    hero: 40,
   },
   lineHeight: {
     xs: 16,
@@ -226,12 +214,14 @@ export const typography = {
     xl: 30,
     xxl: 34,
     display: 40,
+    hero: 48,
   },
   weight: {
     regular: '400' as TextStyle['fontWeight'],
     medium: '500' as TextStyle['fontWeight'],
     semibold: '600' as TextStyle['fontWeight'],
     bold: '700' as TextStyle['fontWeight'],
+    heavy: '900' as TextStyle['fontWeight'],
   },
   presets: {
     caption: {
@@ -242,7 +232,7 @@ export const typography = {
     captionMedium: {
       fontSize: 12,
       lineHeight: 16,
-      fontWeight: '500',
+      fontWeight: '600',
     } as TextStyle,
     bodySm: {
       fontSize: 14,
@@ -252,7 +242,7 @@ export const typography = {
     bodySmMedium: {
       fontSize: 14,
       lineHeight: 20,
-      fontWeight: '500',
+      fontWeight: '600',
     } as TextStyle,
     body: {
       fontSize: 16,
@@ -277,24 +267,26 @@ export const typography = {
     titleMd: {
       fontSize: 20,
       lineHeight: 28,
-      fontWeight: '600',
+      fontWeight: '700',
     } as TextStyle,
     titleLg: {
       fontSize: 24,
       lineHeight: 32,
-      fontWeight: '700',
+      fontWeight: '800',
     } as TextStyle,
     display: {
       fontSize: 32,
-      lineHeight: 40,
-      fontWeight: '700',
+      lineHeight: 38,
+      fontWeight: '800',
+    } as TextStyle,
+    hero: {
+      fontSize: 40,
+      lineHeight: 46,
+      fontWeight: '900',
     } as TextStyle,
   },
 } as const;
 
-/**
- * Cross-Platform Elevation & Shadow Tokens
- */
 export const shadows = {
   none: {
     shadowColor: 'transparent',
@@ -304,32 +296,28 @@ export const shadows = {
     elevation: 0,
   } as ViewStyle,
   sm: {
-    shadowColor: '#000000',
+    shadowColor: '#0E0F0C',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.04,
     shadowRadius: 2,
     elevation: 1,
   } as ViewStyle,
   md: {
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowColor: '#0E0F0C',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.07,
+    shadowRadius: 6,
     elevation: 3,
   } as ViewStyle,
   lg: {
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.14,
-    shadowRadius: 8,
+    shadowColor: '#0E0F0C',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 14,
     elevation: 6,
   } as ViewStyle,
 } as const;
 
-/**
- * Accessibility Hit Slop Preset
- * Guarantees Apple 44x44 pt minimum touch target for small icons and controls.
- */
 export const hitSlop = {
   top: 10,
   bottom: 10,

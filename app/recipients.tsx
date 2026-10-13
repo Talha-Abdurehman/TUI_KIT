@@ -1,0 +1,196 @@
+/**
+ * Author: Talha Abdurehman <talhakyle124@gmail.com>
+ * Wise Deconstructed Recipients Screen
+ */
+
+import React, { useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useTheme } from '@/theme';
+import { Badge, Button, Card, Input, Text } from '@/components';
+
+export default function RecipientsScreen() {
+  const { colors, spacing, radius } = useTheme();
+  const [search, setSearch] = useState('');
+
+  const recipients = [
+    {
+      name: 'Sarah Jenkins',
+      email: 'sarah.j@example.com',
+      currency: 'GBP',
+      flag: '🇬🇧',
+      accountNumber: '•••• 3819',
+      isRecent: true,
+    },
+    {
+      name: 'Hans Schmidt',
+      email: 'hans.schmidt@berlin.de',
+      currency: 'EUR',
+      flag: '🇩🇪',
+      accountNumber: 'DE89 •••• 1029',
+      isRecent: true,
+    },
+    {
+      name: 'Alex Rivera',
+      email: 'alex.rivera@nybank.com',
+      currency: 'USD',
+      flag: '🇺🇸',
+      accountNumber: 'Routing •••• 9921',
+      isRecent: false,
+    },
+    {
+      name: 'Kenji Sato',
+      email: 'kenji.sato@tokyo.jp',
+      currency: 'JPY',
+      flag: '🇯🇵',
+      accountNumber: '•••• 4410',
+      isRecent: false,
+    },
+    {
+      name: 'Elena Rostova',
+      email: 'elena.rostova@geneva.ch',
+      currency: 'CHF',
+      flag: '🇨🇭',
+      accountNumber: 'CH93 •••• 8841',
+      isRecent: false,
+    },
+  ];
+
+  const filtered = recipients.filter(
+    (r) =>
+      r.name.toLowerCase().includes(search.toLowerCase()) ||
+      r.currency.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <ScrollView
+      contentContainerStyle={[styles.content, { padding: spacing.md, backgroundColor: colors.background }]}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Header and Add Button */}
+      <View style={styles.topRow}>
+        <Text variant="titleLg" color="textPrimary">
+          Recipients
+        </Text>
+        <Button
+          label="+ Add"
+          variant="primary"
+          size="sm"
+          onPress={() => {}}
+        />
+      </View>
+
+      {/* Search Input */}
+      <Input
+        placeholder="Search name, email, or currency..."
+        value={search}
+        onChangeText={setSearch}
+        containerStyle={styles.searchContainer}
+      />
+
+      {/* My Accounts Section */}
+      <Text variant="captionMedium" color="textMuted" style={styles.groupTitle}>
+        MY ACCOUNTS
+      </Text>
+      <Card variant="outlined" style={styles.myAccountCard}>
+        <View style={styles.recipientRow}>
+          <View style={[styles.avatarCircle, { backgroundColor: colors.primary }]}>
+            <Text variant="bodyBold" style={{ color: colors.primaryForeground }}>
+              TA
+            </Text>
+          </View>
+          <View style={styles.recipientInfo}>
+            <Text variant="bodyBold">Talha Abdurehman (Primary)</Text>
+            <Text variant="caption" color="textSecondary">
+              Barclays UK • 🇬🇧 GBP • Account •••• 9932
+            </Text>
+          </View>
+          <Badge label="Owner" variant="secondary" size="sm" />
+        </View>
+      </Card>
+
+      {/* Other Recipients Section */}
+      <Text variant="captionMedium" color="textMuted" style={[styles.groupTitle, { marginTop: 20 }]}>
+        ALL RECIPIENTS ({filtered.length})
+      </Text>
+
+      <Card variant="flat" style={styles.recipientsListCard}>
+        {filtered.map((item, idx) => (
+          <Pressable
+            key={item.email}
+            accessibilityRole="button"
+            style={({ pressed }) => [
+              styles.recipientRow,
+              idx > 0 && [styles.divider, { borderTopColor: colors.borderSubtle }],
+              pressed && styles.pressed,
+            ]}
+          >
+            <View style={[styles.avatarCircle, { backgroundColor: colors.surfaceHover }]}>
+              <Text variant="titleSm">{item.flag}</Text>
+            </View>
+
+            <View style={styles.recipientInfo}>
+              <Text variant="bodyBold" color="textPrimary">
+                {item.name}
+              </Text>
+              <Text variant="caption" color="textSecondary">
+                {item.currency} • {item.accountNumber}
+              </Text>
+            </View>
+
+            <Button label="Send" variant="ghost" size="sm" />
+          </Pressable>
+        ))}
+      </Card>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  content: {
+    paddingBottom: 40,
+  },
+  topRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  searchContainer: {
+    marginBottom: 16,
+  },
+  groupTitle: {
+    marginBottom: 8,
+    letterSpacing: 0.8,
+  },
+  myAccountCard: {
+    padding: 14,
+    borderRadius: 16,
+  },
+  recipientsListCard: {
+    paddingHorizontal: 16,
+    borderRadius: 16,
+  },
+  recipientRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  divider: {
+    borderTopWidth: 1,
+  },
+  avatarCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  recipientInfo: {
+    flex: 1,
+    marginRight: 8,
+  },
+  pressed: {
+    opacity: 0.75,
+  },
+});
