@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { Badge, Button, Card, Input, Text } from '@/components';
 
 export default function RecipientsScreen() {
@@ -109,7 +109,7 @@ export default function RecipientsScreen() {
       </Card>
 
       {/* Other Recipients Section */}
-      <Text variant="captionMedium" color="textMuted" style={[styles.groupTitle, { marginTop: 20 }]}>
+      <Text variant="captionMedium" color="textMuted" style={[styles.groupTitle, { marginTop: spacing.ml }]}>
         ALL RECIPIENTS ({filtered.length})
       </Text>
 
@@ -147,48 +147,48 @@ export default function RecipientsScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: 40,
+    paddingBottom: theme.spacing.xxl,
   },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: theme.spacing.md,
   },
   searchContainer: {
-    marginBottom: 16,
+    marginBottom: theme.spacing.md,
   },
   groupTitle: {
-    marginBottom: 8,
+    marginBottom: theme.spacing.sm,
     letterSpacing: 0.8,
   },
   myAccountCard: {
-    padding: 14,
-    borderRadius: 16,
+    padding: theme.spacing.md,
+    borderRadius: theme.radius.lg,
   },
   recipientsListCard: {
-    paddingHorizontal: 16,
-    borderRadius: 16,
+    paddingHorizontal: theme.spacing.md,
+    borderRadius: theme.radius.lg,
   },
   recipientRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: theme.spacing.ms,
   },
   divider: {
     borderTopWidth: 1,
   },
   avatarCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: theme.layout.avatarLg,
+    height: theme.layout.avatarLg,
+    borderRadius: theme.layout.avatarLg / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: theme.spacing.ms,
   },
   recipientInfo: {
     flex: 1,
-    marginRight: 8,
+    marginRight: theme.spacing.sm,
   },
   pressed: {
     opacity: 0.75,

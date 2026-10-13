@@ -19,6 +19,11 @@ export interface ThemeColors {
   secondaryDark: string;
   secondaryForeground: string;
 
+  // Specific Fintech Brand Identity
+  brandLime: string;
+  brandForest: string;
+  cardFrozenOverlay: string;
+
   // Background & Elevation Surfaces (Warm Sage / Ink)
   background: string;
   surface: string;
@@ -73,6 +78,11 @@ export const lightColors: ThemeColors = {
   secondaryLight: '#2E590A',
   secondaryDark: '#0D1F00',
   secondaryForeground: '#FFFFFF',
+
+  // Fintech Brand Tokens
+  brandLime: '#9FE870',
+  brandForest: '#163300',
+  cardFrozenOverlay: 'rgba(255, 255, 255, 0.35)',
 
   // Background: Warm Sage Off-white Canvas & Pure White Surfaces
   background: '#F4F5F2',
@@ -129,6 +139,11 @@ export const darkColors: ThemeColors = {
   secondaryDark: '#B8BEB2',
   secondaryForeground: '#0E0F0C',
 
+  // Fintech Brand Tokens
+  brandLime: '#9FE870',
+  brandForest: '#163300',
+  cardFrozenOverlay: 'rgba(255, 255, 255, 0.15)',
+
   // Background: Deep Charcoal / Ink Canvas
   background: '#0E0F0C',
   surface: '#1A1D17',
@@ -177,7 +192,9 @@ export const spacing = {
   xxs: 2,
   xs: 4,
   sm: 8,
+  ms: 12,
   md: 16,
+  ml: 20,
   lg: 24,
   xl: 32,
   xxl: 48,
@@ -318,6 +335,44 @@ export const shadows = {
   } as ViewStyle,
 } as const;
 
+/**
+ * Standard Component Dimensions & Aspect Ratios
+ */
+export const layout = {
+  // Button heights
+  buttonHeightSm: 36,
+  buttonHeightMd: 44,
+  buttonHeightLg: 52,
+  // Action circle
+  actionCircleSize: 52,
+  actionCircleContainerWidth: 72,
+  // Flag / avatar circles
+  flagCircleSize: 38,
+  avatarSm: 32,
+  avatarMd: 38,
+  avatarLg: 44,
+  // Currency card
+  currencyCardWidth: 156,
+  currencyCardHeight: 160,
+  // Debit card
+  debitCardAspectRatio: 1.586,
+  emvChipWidth: 36,
+  emvChipHeight: 28,
+  mastercardLogoWidth: 38,
+  mastercardLogoHeight: 24,
+  mcCircleSize: 22,
+  mcCircleOverlap: -10,
+  // Input
+  inputMinHeight: 44,
+  // Navigation
+  bottomNavHeight: 70,
+  headerHeight: 56,
+  // Timeline / progress
+  stepDotSize: 12,
+  stepLineWidth: 2,
+  progressBarHeight: 8,
+} as const;
+
 export const hitSlop = {
   top: 10,
   bottom: 10,
@@ -329,3 +384,4 @@ export type SpacingKey = keyof typeof spacing;
 export type RadiusKey = keyof typeof radius;
 export type TypographyPresetKey = keyof typeof typography.presets;
 export type ShadowKey = keyof typeof shadows;
+export type LayoutKey = keyof typeof layout;

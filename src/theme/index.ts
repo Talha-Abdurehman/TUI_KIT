@@ -10,6 +10,7 @@ import { useColorScheme } from 'react-native';
 import {
   darkColors,
   hitSlop,
+  layout,
   lightColors,
   radius,
   shadows,
@@ -28,6 +29,7 @@ export const lightTheme = {
   radius,
   typography,
   shadows,
+  layout,
   hitSlop,
 };
 
@@ -38,6 +40,7 @@ export const darkTheme = {
   radius,
   typography,
   shadows,
+  layout,
   hitSlop,
 };
 
@@ -58,6 +61,7 @@ export const theme = lightTheme;
 
 export type Theme = typeof lightTheme;
 export type {
+  LayoutKey,
   RadiusKey,
   ShadowKey,
   SpacingKey,
@@ -68,6 +72,7 @@ export type {
 export {
   darkColors,
   hitSlop,
+  layout,
   lightColors,
   radius,
   shadows,

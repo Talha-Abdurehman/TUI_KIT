@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { Badge } from '../Badge';
 import { Text } from '../Text';
 
@@ -28,11 +28,12 @@ export const DebitCardVisual: React.FC<DebitCardVisualProps> = ({
   onPress,
   testID,
 }) => {
-  const { radius, shadows } = useTheme();
+  const { colors, radius, shadows } = useTheme();
 
   const isLime = themeVariant === 'lime';
-  const bgColor = isLime ? '#9FE870' : '#163300';
-  const textColor = isLime ? '#163300' : '#F4F5F2';
+  const bgColor = isLime ? colors.brandLime : colors.brandForest;
+  const textColor = isLime ? colors.brandForest : colors.textPrimary;
+  // Derived tint — not in token palette
   const chipBg = isLime ? '#88D05C' : '#284E0B';
 
   return (
@@ -123,19 +124,31 @@ export const DebitCardVisual: React.FC<DebitCardVisualProps> = ({
 
           {/* Mastercard circles logo */}
           <View style={styles.mastercardLogo}>
-            <View style={[styles.mcCircle, { backgroundColor: '#EB001B' }]} />
+            <View
+              style={[
+                styles.mcCircle,
+                { backgroundColor: '#EB001B' }, // Mastercard brand red
+              ]}
+            />
             <View
               style={[
                 styles.mcCircle,
                 styles.mcCircleRight,
-                { backgroundColor: '#F79E1B' },
+                { backgroundColor: '#F79E1B' }, // Mastercard brand amber
               ]}
             />
           </View>
         </View>
       </View>
 
-      {isFrozen ? <View style={styles.frozenOverlay} /> : null}
+      {isFrozen ? (
+        <View
+          style={[
+            styles.frozenOverlay,
+            { backgroundColor: colors.cardFrozenOverlay },
+          ]}
+        />
+      ) : null}
     </Pressable>
   );
 };
@@ -143,8 +156,8 @@ export const DebitCardVisual: React.FC<DebitCardVisualProps> = ({
 const styles = StyleSheet.create({
   cardContainer: {
     width: '100%',
-    aspectRatio: 1.586,
-    padding: 22,
+    aspectRatio: theme.layout.debitCardAspectRatio,
+    padding: theme.spacing.lg,
     justifyContent: 'space-between',
     overflow: 'hidden',
   },
@@ -168,18 +181,18 @@ const styles = StyleSheet.create({
   chipRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: theme.spacing.ms,
   },
   emvChip: {
-    width: 36,
-    height: 28,
-    borderRadius: 6,
+    width: theme.layout.emvChipWidth,
+    height: theme.layout.emvChipHeight,
+    borderRadius: theme.radius.sm,
   },
   bottomBlock: {
     marginTop: 'auto',
   },
   digitsRow: {
-    marginBottom: 10,
+    marginBottom: theme.spacing.ms,
   },
   cardNumber: {
     letterSpacing: 2,
@@ -190,25 +203,25 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   expiryCol: {
-    marginLeft: 12,
+    marginLeft: theme.spacing.ms,
   },
   mastercardLogo: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: 38,
-    height: 24,
+    width: theme.layout.mastercardLogoWidth,
+    height: theme.layout.mastercardLogoHeight,
   },
   mcCircle: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
+    width: theme.layout.mcCircleSize,
+    height: theme.layout.mcCircleSize,
+    borderRadius: theme.layout.mcCircleSize / 2,
     opacity: 0.9,
   },
   mcCircleRight: {
-    marginLeft: -10,
+    marginLeft: theme.layout.mcCircleOverlap,
   },
   frozenOverlay: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: theme.colors.cardFrozenOverlay,
   },
 });

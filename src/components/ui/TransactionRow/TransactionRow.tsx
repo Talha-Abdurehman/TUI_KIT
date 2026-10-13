@@ -5,7 +5,7 @@
 
 import React, { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { Badge } from '../Badge';
 import { Text } from '../Text';
 
@@ -95,25 +95,25 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: theme.spacing.ms,
   },
   avatar: {
-    width: 44,
-    height: 44,
+    width: theme.layout.avatarLg,
+    height: theme.layout.avatarLg,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: theme.spacing.ms,
   },
   textContainer: {
     flex: 1,
-    marginRight: 12,
+    marginRight: theme.spacing.ms,
   },
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    marginBottom: 2,
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.xxs,
   },
   title: {
     flexShrink: 1,

@@ -10,7 +10,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { Text } from '../Text';
 import { ButtonProps } from './Button.types';
 
@@ -28,7 +28,7 @@ export const Button: React.FC<ButtonProps> = ({
   testID,
   ...pressableProps
 }) => {
-  const { colors, spacing, radius, hitSlop } = useTheme();
+  const { colors, spacing, radius, hitSlop, layout } = useTheme();
 
   const isInteractive = !isDisabled && !isLoading;
 
@@ -81,20 +81,20 @@ export const Button: React.FC<ButtonProps> = ({
     switch (size) {
       case 'sm':
         return {
-          height: 36,
+          height: layout.buttonHeightSm,
           paddingHorizontal: spacing.sm,
           textVariant: 'bodySmMedium' as const,
         };
       case 'lg':
         return {
-          height: 52,
+          height: layout.buttonHeightLg,
           paddingHorizontal: spacing.lg,
           textVariant: 'bodyBold' as const,
         };
       case 'md':
       default:
         return {
-          height: 44,
+          height: layout.buttonHeightMd,
           paddingHorizontal: spacing.md,
           textVariant: 'bodyMedium' as const,
         };
@@ -175,12 +175,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconLeft: {
-    marginRight: 8,
+    marginRight: theme.spacing.sm,
   },
   iconRight: {
-    marginLeft: 8,
+    marginLeft: theme.spacing.sm,
   },
   loader: {
-    paddingVertical: 2,
+    paddingVertical: theme.spacing.xxs,
   },
 });

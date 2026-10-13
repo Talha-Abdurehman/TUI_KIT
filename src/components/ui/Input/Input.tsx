@@ -9,7 +9,7 @@ import {
   TextInput as NativeTextInput,
   View,
 } from 'react-native';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { Text } from '../Text';
 import { InputProps } from './Input.types';
 
@@ -27,7 +27,7 @@ export const Input: React.FC<InputProps> = ({
   onBlur,
   ...textInputProps
 }) => {
-  const { colors, spacing, radius } = useTheme();
+  const { colors, spacing, radius, layout } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
 
   const hasError = Boolean(errorText);
@@ -105,30 +105,30 @@ export const Input: React.FC<InputProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginBottom: 12,
+    marginBottom: theme.spacing.ms,
   },
   label: {
-    marginBottom: 6,
+    marginBottom: theme.spacing.sm,
   },
   inputWrapper: {
-    minHeight: 44,
+    minHeight: theme.layout.inputMinHeight,
     borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
   input: {
     flex: 1,
-    fontSize: 16,
-    paddingVertical: 10,
+    fontSize: theme.typography.size.md,
+    paddingVertical: theme.spacing.ms,
   },
   iconLeft: {
-    marginRight: 8,
+    marginRight: theme.spacing.sm,
   },
   iconRight: {
-    marginLeft: 8,
+    marginLeft: theme.spacing.sm,
   },
   helper: {
-    marginTop: 4,
+    marginTop: theme.spacing.xs,
   },
   disabled: {
     opacity: 0.5,

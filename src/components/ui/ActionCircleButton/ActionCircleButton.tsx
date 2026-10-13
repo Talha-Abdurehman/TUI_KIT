@@ -5,7 +5,7 @@
 
 import React, { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { Text } from '../Text';
 
 export interface ActionCircleButtonProps {
@@ -65,15 +65,15 @@ export const ActionCircleButton: React.FC<ActionCircleButtonProps> = ({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: 72,
+    width: theme.layout.actionCircleContainerWidth,
   },
   circle: {
-    width: 52,
-    height: 52,
+    width: theme.layout.actionCircleSize,
+    height: theme.layout.actionCircleSize,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 6,
+    marginBottom: theme.spacing.sm,
   },
   label: {
     width: '100%',

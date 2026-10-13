@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { Text } from '../Text';
 import { CurrencyCardProps } from './CurrencyCard.types';
 
@@ -96,11 +96,11 @@ export const CurrencyCard: React.FC<CurrencyCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: 156,
-    height: 160,
+    width: theme.layout.currencyCardWidth,
+    height: theme.layout.currencyCardHeight,
     borderWidth: 1,
     justifyContent: 'space-between',
-    marginRight: 12,
+    marginRight: theme.spacing.md,
   },
   addCard: {
     borderStyle: 'dashed',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addContent: {
-    marginTop: 12,
+    marginTop: theme.spacing.sm,
     alignItems: 'center',
   },
   topRow: {
@@ -117,9 +117,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flagCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: theme.layout.flagCircleSize,
+    height: theme.layout.flagCircleSize,
+    borderRadius: theme.layout.flagCircleSize / 2,
     justifyContent: 'center',
     alignItems: 'center',
   },

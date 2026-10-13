@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { Badge, Button, Card, Input, Text } from '@/components';
 
 export default function PaymentsScreen() {
@@ -42,7 +42,7 @@ export default function PaymentsScreen() {
             />
             <View style={[styles.currencyPill, { backgroundColor: colors.surfaceSubtle }]}>
               <Text variant="titleSm">🇬🇧</Text>
-              <Text variant="bodyBold" style={{ marginLeft: 6 }}>
+              <Text variant="bodyBold" style={{ marginLeft: spacing.sm }}>
                 GBP
               </Text>
             </View>
@@ -80,7 +80,7 @@ export default function PaymentsScreen() {
             </View>
             <View style={[styles.currencyPill, { backgroundColor: colors.surfaceSubtle }]}>
               <Text variant="titleSm">🇪🇺</Text>
-              <Text variant="bodyBold" style={{ marginLeft: 6 }}>
+              <Text variant="bodyBold" style={{ marginLeft: spacing.sm }}>
                 EUR
               </Text>
             </View>
@@ -143,26 +143,26 @@ export default function PaymentsScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: 40,
+    paddingBottom: theme.spacing.xxl,
   },
   screenTitle: {
-    marginBottom: 16,
+    marginBottom: theme.spacing.md,
   },
   calculatorCard: {
-    padding: 18,
-    borderRadius: 20,
-    marginBottom: 24,
+    padding: theme.spacing.md,
+    borderRadius: theme.radius.xl,
+    marginBottom: theme.spacing.lg,
   },
   inputBlock: {
-    marginBottom: 12,
+    marginBottom: theme.spacing.ms,
   },
   inputLabel: {
-    marginBottom: 6,
+    marginBottom: theme.spacing.sm,
   },
   amountRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: theme.spacing.ms,
   },
   amountInput: {
     flex: 1,
@@ -170,23 +170,23 @@ const styles = StyleSheet.create({
   },
   resultBox: {
     flex: 1,
-    height: 44,
+    height: theme.layout.inputMinHeight,
     justifyContent: 'center',
-    paddingHorizontal: 12,
+    paddingHorizontal: theme.spacing.ms,
   },
   currencyPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    height: 44,
-    borderRadius: 12,
+    paddingHorizontal: theme.spacing.ms,
+    height: theme.layout.inputMinHeight,
+    borderRadius: theme.radius.md,
   },
   feeBreakdown: {
     borderLeftWidth: 2,
-    borderLeftColor: '#9FE870',
-    paddingLeft: 12,
-    marginVertical: 12,
-    gap: 6,
+    borderLeftColor: theme.colors.brandLime,
+    paddingLeft: theme.spacing.ms,
+    marginVertical: theme.spacing.ms,
+    gap: theme.spacing.sm,
   },
   feeLine: {
     flexDirection: 'row',
@@ -194,38 +194,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   ctaButton: {
-    marginTop: 16,
+    marginTop: theme.spacing.md,
   },
   sectionTitle: {
-    marginBottom: 12,
+    marginBottom: theme.spacing.ms,
   },
   trackerCard: {
-    padding: 18,
-    borderRadius: 16,
+    padding: theme.spacing.md,
+    borderRadius: theme.radius.lg,
   },
   trackerHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 16,
+    marginBottom: theme.spacing.md,
   },
   timeline: {
-    paddingLeft: 6,
+    paddingLeft: theme.spacing.sm,
   },
   timelineStep: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: theme.spacing.ms,
   },
   stepDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    width: theme.layout.stepDotSize,
+    height: theme.layout.stepDotSize,
+    borderRadius: theme.layout.stepDotSize / 2,
   },
   stepLine: {
-    width: 2,
-    height: 20,
-    marginLeft: 5,
-    marginVertical: 3,
+    width: theme.layout.stepLineWidth,
+    height: theme.spacing.ml,
+    marginLeft: theme.spacing.xs,
+    marginVertical: theme.spacing.xxs,
   },
 });

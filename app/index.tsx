@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import {
   ActionCircleButton,
   Badge,
@@ -25,7 +25,7 @@ import {
 
 export default function WiseHomeScreen() {
   const router = useRouter();
-  const { colors, spacing, radius, isDark } = useTheme();
+  const { colors, spacing, radius, isDark, layout } = useTheme();
   const [activeTab, setActiveTab] = useState<'home' | 'cards' | 'recipients' | 'payments'>('home');
 
   return (
@@ -132,18 +132,18 @@ export default function WiseHomeScreen() {
         <Pressable
           accessibilityRole="button"
           onPress={() => router.push('/cards' as any)}
-          style={[styles.cardBanner, { backgroundColor: '#163300', borderRadius: radius.xl }]}
+          style={[styles.cardBanner, { backgroundColor: colors.brandForest, borderRadius: radius.xl }]}
         >
           <View style={styles.cardBannerLeft}>
             <Badge label="Active Card" variant="success" size="sm" />
-            <Text variant="titleSm" style={{ color: '#F4F5F2', marginTop: 6 }}>
+            <Text variant="titleSm" style={{ color: colors.textInverse, marginTop: spacing.sm }}>
               Wise Digital Card
             </Text>
-            <Text variant="caption" style={{ color: '#9CA396' }}>
+            <Text variant="caption" style={{ color: colors.textMuted }}>
               •••• 4821 • Tap to manage limits & freeze
             </Text>
           </View>
-          <View style={styles.cardMiniChip}>
+          <View style={[styles.cardMiniChip, { backgroundColor: colors.brandLime }]}>
             <Text variant="titleSm">💳</Text>
           </View>
         </Pressable>
@@ -177,7 +177,7 @@ export default function WiseHomeScreen() {
             avatarIcon={<Text variant="bodySm">☕</Text>}
           />
 
-          <Text variant="captionMedium" color="textMuted" style={[styles.dateHeader, { marginTop: 16 }]}>
+          <Text variant="captionMedium" color="textMuted" style={[styles.dateHeader, { marginTop: spacing.md }]}>
             YESTERDAY
           </Text>
           <TransactionRow
@@ -273,15 +273,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 56,
+    height: theme.layout.headerHeight,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   avatar: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: theme.layout.avatarMd,
+    height: theme.layout.avatarMd,
+    borderRadius: theme.layout.avatarMd / 2,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -298,62 +298,61 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   iconButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 14,
+    paddingHorizontal: theme.spacing.ms,
+    paddingVertical: theme.spacing.sm,
+    borderRadius: theme.radius.lg,
   },
   scrollContent: {
-    paddingBottom: 90,
+    paddingBottom: theme.layout.bottomNavHeight + theme.spacing.ml,
   },
   balanceOverview: {
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: theme.spacing.md,
+    marginBottom: theme.spacing.md,
   },
   heroAmount: {
-    marginTop: 4,
+    marginTop: theme.spacing.xs,
     letterSpacing: -1,
   },
   currencySlider: {
-    paddingRight: 16,
-    marginBottom: 20,
+    paddingRight: theme.spacing.md,
+    marginBottom: theme.spacing.ml,
   },
   actionsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: theme.spacing.ml,
   },
   cardBanner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 18,
-    marginBottom: 24,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
   },
   cardBannerLeft: {
     flex: 1,
   },
   cardMiniChip: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#9FE870',
+    width: theme.layout.avatarLg,
+    height: theme.layout.avatarLg,
+    borderRadius: theme.layout.avatarLg / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 12,
+    marginLeft: theme.spacing.ms,
   },
   transactionsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: theme.spacing.ms,
   },
   transactionsCard: {
-    padding: 16,
-    borderRadius: 16,
+    padding: theme.spacing.md,
+    borderRadius: theme.radius.lg,
   },
   dateHeader: {
-    marginBottom: 6,
+    marginBottom: theme.spacing.sm,
     letterSpacing: 0.8,
   },
   bottomNav: {
@@ -361,12 +360,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 70,
+    height: theme.layout.bottomNavHeight,
     borderTopWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingBottom: 10,
+    paddingBottom: theme.spacing.ms,
   },
   navItem: {
     alignItems: 'center',

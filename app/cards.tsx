@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
-import { useTheme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { Badge, Button, Card, DebitCardVisual, Text } from '@/components';
 
 export default function CardsScreen() {
@@ -125,7 +125,7 @@ export default function CardsScreen() {
           <View style={[styles.progressFill, { backgroundColor: colors.primaryDark }]} />
         </View>
 
-        <Text variant="caption" color="textMuted" style={{ marginTop: 8 }}>
+        <Text variant="caption" color="textMuted" style={{ marginTop: spacing.sm }}>
           Resets on the 1st of every month
         </Text>
       </Card>
@@ -135,60 +135,60 @@ export default function CardsScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: 40,
+    paddingBottom: theme.spacing.xxl,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: theme.spacing.ml,
   },
   cardWrapper: {
-    marginBottom: 20,
+    marginBottom: theme.spacing.ml,
   },
   actionsRow: {
     flexDirection: 'row',
-    gap: 12,
-    marginBottom: 24,
+    gap: theme.spacing.ms,
+    marginBottom: theme.spacing.lg,
   },
   actionBtn: {
     flex: 1,
   },
   sectionTitle: {
-    marginBottom: 12,
+    marginBottom: theme.spacing.ms,
   },
   controlsCard: {
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 24,
+    padding: theme.spacing.md,
+    borderRadius: theme.radius.lg,
+    marginBottom: theme.spacing.lg,
   },
   controlRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: theme.spacing.ms,
   },
   divider: {
     borderTopWidth: 1,
   },
   controlText: {
     flex: 1,
-    marginRight: 16,
+    marginRight: theme.spacing.md,
   },
   limitsCard: {
-    padding: 18,
-    borderRadius: 16,
+    padding: theme.spacing.md,
+    borderRadius: theme.radius.lg,
   },
   limitHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: theme.spacing.ms,
   },
   progressTrack: {
     width: '100%',
-    height: 8,
-    borderRadius: 4,
+    height: theme.layout.progressBarHeight,
+    borderRadius: theme.radius.xs,
     overflow: 'hidden',
   },
   progressFill: {
