@@ -371,6 +371,18 @@ export const layout = {
   stepDotSize: 12,
   stepLineWidth: 2,
   progressBarHeight: 8,
+  // Responsive Layout & Viewports
+  maxContentWidth: 1280,
+  sidebarWidth: 260,
+  phonePreviewWidth: 393,
+  phonePreviewHeight: 852,
+} as const;
+
+export const breakpoints = {
+  mobile: 0,
+  tablet: 768,
+  desktop: 1024,
+  wide: 1280,
 } as const;
 
 export const hitSlop = {
@@ -385,3 +397,4 @@ export type RadiusKey = keyof typeof radius;
 export type TypographyPresetKey = keyof typeof typography.presets;
 export type ShadowKey = keyof typeof shadows;
 export type LayoutKey = keyof typeof layout;
+export type BreakpointKey = keyof typeof breakpoints;

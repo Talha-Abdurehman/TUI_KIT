@@ -6,8 +6,9 @@
  * to avoid object reallocation on every render, ensuring stable 60-120 FPS in Hermes.
  */
 
-import { useColorScheme } from 'react-native';
+import { useColorScheme, useWindowDimensions } from 'react-native';
 import {
+  breakpoints,
   darkColors,
   hitSlop,
   layout,
@@ -30,6 +31,7 @@ export const lightTheme = {
   typography,
   shadows,
   layout,
+  breakpoints,
   hitSlop,
 };
 
@@ -41,6 +43,7 @@ export const darkTheme = {
   typography,
   shadows,
   layout,
+  breakpoints,
   hitSlop,
 };
 
@@ -54,6 +57,28 @@ export function useTheme() {
 }
 
 /**
+ * Responsive viewport hook.
+ * Inspects window dimensions and resolves active device category.
+ */
+export function useResponsive() {
+  const { width, height } = useWindowDimensions();
+  const isMobile = width < breakpoints.tablet;
+  const isTablet = width >= breakpoints.tablet && width < breakpoints.desktop;
+  const isDesktop = width >= breakpoints.desktop;
+  const isWide = width >= breakpoints.wide;
+
+  return {
+    width,
+    height,
+    isMobile,
+    isTablet,
+    isDesktop,
+    isWide,
+    breakpoint: isWide ? 'wide' : isDesktop ? 'desktop' : isTablet ? 'tablet' : ('mobile' as const),
+  };
+}
+
+/**
  * Static theme fallback for top-level StyleSheet.create calculations
  * where React hooks cannot be executed.
  */
@@ -61,6 +86,7 @@ export const theme = lightTheme;
 
 export type Theme = typeof lightTheme;
 export type {
+  BreakpointKey,
   LayoutKey,
   RadiusKey,
   ShadowKey,
@@ -70,6 +96,7 @@ export type {
 } from './tokens';
 
 export {
+  breakpoints,
   darkColors,
   hitSlop,
   layout,

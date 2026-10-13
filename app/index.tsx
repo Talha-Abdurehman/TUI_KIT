@@ -1,7 +1,7 @@
 /**
  * Author: Talha Abdurehman <talhakyle124@gmail.com>
- * Production Component Showcase - Complete UI Kit Primitives Catalog
- * Deconstructed token-driven design system with 100% token fidelity.
+ * Responsive Component Showcase - Full Desktop & Mobile Workbenches
+ * Zero arbitrary values, 100% token-driven design system with Hermes performance.
  */
 
 import React, { useState } from 'react';
@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { theme, useTheme } from '@/theme';
+import { theme, useResponsive, useTheme } from '@/theme';
 import {
   ActionCircleButton,
   Badge,
@@ -26,11 +26,20 @@ import {
   TransactionRow,
 } from '@/components';
 
-export default function ComponentShowcaseScreen() {
+type ViewMode = 'auto' | 'desktop' | 'mobile';
+
+export default function ResponsiveShowcaseScreen() {
   const router = useRouter();
   const { colors, spacing, radius, isDark, layout } = useTheme();
+  const { isDesktop: detectedDesktop, width: windowWidth } = useResponsive();
 
-  // Interactive showcase state controls
+  // Viewport mode: auto-detect by default, or manually forced by user
+  const [viewMode, setViewMode] = useState<ViewMode>('auto');
+
+  // Resolved active layout
+  const isDesktop = viewMode === 'auto' ? detectedDesktop : viewMode === 'desktop';
+
+  // Interactive component tester state
   const [btnLoading, setBtnLoading] = useState(false);
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [cardPressCount, setCardPressCount] = useState(0);
@@ -38,541 +47,796 @@ export default function ComponentShowcaseScreen() {
   const [cardVariant, setCardVariant] = useState<'lime' | 'forest'>('lime');
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState('');
+  const [activeNavSection, setActiveNavSection] = useState('all');
 
-  return (
-    <SafeAreaView edges={['top', 'left', 'right']} style={[styles.safeArea, { backgroundColor: colors.background }]}>
-      {/* Top Showcase App Bar */}
-      <View style={[styles.headerBar, { borderBottomColor: colors.borderSubtle, backgroundColor: colors.surface }]}>
-        <View style={styles.headerLeft}>
-          <Text variant="titleMd" color="textPrimary">
-            UI Kit Catalog
+  // Shared Component Sections
+  const renderButtonsSection = () => (
+    <Card variant="outlined" style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            1. Buttons Primitive
           </Text>
-          <View style={styles.badgeRow}>
-            <Badge label="Expo SDK 57" variant="secondary" size="sm" />
-            <Badge label={isDark ? 'Dark Mode' : 'Light Mode'} variant="primary" size="sm" />
-          </View>
+          <Text variant="caption" color="textMuted">
+            Pill shape (radius.full), 5 semantic variants, 3 sizes, loading & disabled
+          </Text>
         </View>
-
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Cards Demo"
-          onPress={() => router.push('/cards' as any)}
-          style={[styles.headerDemoBtn, { backgroundColor: colors.surfaceSubtle }]}
-        >
-          <Text variant="captionMedium" color="textPrimary">
-            Demo Apps ↗
+        <Pressable onPress={() => router.push('/showcase/button' as any)}>
+          <Text variant="captionMedium" color="textSecondary">
+            Isolated View →
           </Text>
         </Pressable>
       </View>
 
-      <ScrollView
-        contentContainerStyle={[styles.scrollContent, { paddingHorizontal: spacing.md, paddingVertical: spacing.md }]}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Intro Banner */}
-        <Card variant="flat" style={styles.introCard}>
-          <Text variant="captionMedium" color="textMuted">
-            DESIGN SYSTEM & COMPONENT SHOWCASE
-          </Text>
-          <Text variant="titleLg" color="textPrimary" style={styles.introTitle}>
-            Fintech UI Primitives
-          </Text>
-          <Text variant="bodySm" color="textSecondary">
-            Zero arbitrary values, 100% token-driven contract, Hermes-optimized, and built for strict TypeScript.
-          </Text>
+      {/* Interactive Controls Bar */}
+      <View style={[styles.testControlsRow, { borderBottomColor: colors.borderSubtle }]}>
+        <Text variant="captionMedium" color="textSecondary">
+          Live Test:
+        </Text>
+        <Button
+          label={btnLoading ? 'Stop Loading' : 'Simulate Loading'}
+          variant="secondary"
+          size="sm"
+          onPress={() => setBtnLoading((prev) => !prev)}
+        />
+        <Button
+          label={btnDisabled ? 'Enable Buttons' : 'Disable Buttons'}
+          variant="secondary"
+          size="sm"
+          onPress={() => setBtnDisabled((prev) => !prev)}
+        />
+      </View>
 
-          {/* Quick Screen Navigation Links */}
-          <View style={styles.quickNavRow}>
+      {/* Variants */}
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        SEMANTIC VARIANTS (MD - 44PT)
+      </Text>
+      <View style={styles.buttonGrid}>
+        <Button
+          label="Primary"
+          variant="primary"
+          isLoading={btnLoading}
+          isDisabled={btnDisabled}
+        />
+        <Button
+          label="Secondary"
+          variant="secondary"
+          isLoading={btnLoading}
+          isDisabled={btnDisabled}
+        />
+        <Button
+          label="Outline"
+          variant="outline"
+          isLoading={btnLoading}
+          isDisabled={btnDisabled}
+        />
+        <Button
+          label="Ghost"
+          variant="ghost"
+          isLoading={btnLoading}
+          isDisabled={btnDisabled}
+        />
+        <Button
+          label="Danger"
+          variant="danger"
+          isLoading={btnLoading}
+          isDisabled={btnDisabled}
+        />
+      </View>
+
+      {/* Sizes */}
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        STANDARD SIZES
+      </Text>
+      <View style={styles.sizesRow}>
+        <Button label="Small (36pt)" size="sm" variant="primary" />
+        <Button label="Medium (44pt)" size="md" variant="primary" />
+        <Button label="Large (52pt)" size="lg" variant="primary" />
+      </View>
+
+      {/* Full width with icon */}
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        FULL WIDTH WITH ICON
+      </Text>
+      <Button
+        label="Send Instant Transfer"
+        variant="primary"
+        size="lg"
+        isFullWidth={true}
+        leftIcon={<Text variant="bodyBold" style={{ color: colors.primaryForeground }}>↗</Text>}
+      />
+    </Card>
+  );
+
+  const renderBadgesSection = () => (
+    <Card variant="outlined" style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            2. Badges & Status Chips
+          </Text>
+          <Text variant="caption" color="textMuted">
+            7 semantic states with accessible contrast ratios
+          </Text>
+        </View>
+        <Pressable onPress={() => router.push('/showcase/badge' as any)}>
+          <Text variant="captionMedium" color="textSecondary">
+            Isolated View →
+          </Text>
+        </Pressable>
+      </View>
+
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        MEDIUM BADGES (STANDARD)
+      </Text>
+      <View style={styles.badgeWrap}>
+        <Badge label="Primary" variant="primary" size="md" />
+        <Badge label="Secondary" variant="secondary" size="md" />
+        <Badge label="Success" variant="success" size="md" />
+        <Badge label="Warning" variant="warning" size="md" />
+        <Badge label="Error" variant="error" size="md" />
+        <Badge label="Info" variant="info" size="md" />
+        <Badge label="Outline" variant="outline" size="md" />
+      </View>
+
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        SMALL STATUS CHIPS (COMPACT)
+      </Text>
+      <View style={styles.badgeWrap}>
+        <Badge label="Active 🟢" variant="success" size="sm" />
+        <Badge label="Processing ⏳" variant="warning" size="sm" />
+        <Badge label="Declined ✕" variant="error" size="sm" />
+        <Badge label="Verified ✓" variant="info" size="sm" />
+        <Badge label="Digital" variant="secondary" size="sm" />
+      </View>
+    </Card>
+  );
+
+  const renderInputsSection = () => (
+    <Card variant="outlined" style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            3. Input Fields & Forms
+          </Text>
+          <Text variant="caption" color="textMuted">
+            Focus ring states, inline validation, and accessory slots
+          </Text>
+        </View>
+        <Pressable onPress={() => router.push('/showcase/input' as any)}>
+          <Text variant="captionMedium" color="textSecondary">
+            Isolated View →
+          </Text>
+        </Pressable>
+      </View>
+
+      <Input
+        label="Account Holder Name"
+        placeholder="e.g. Talha Abdurehman"
+        value={inputValue}
+        onChangeText={(txt) => {
+          setInputValue(txt);
+          if (txt.length > 0 && txt.length < 3) {
+            setInputError('Name must be at least 3 characters');
+          } else {
+            setInputError('');
+          }
+        }}
+        helperText={inputError ? undefined : 'Live interactive input validation'}
+        errorText={inputError}
+        leftIcon={<Text variant="bodySm">👤</Text>}
+      />
+
+      <Input
+        label="IBAN / Account Number"
+        placeholder="GB29 NWBK 6016 1331 9268 19"
+        defaultValue="GB29 NWBK 6016 1331 9268 19"
+        helperText="International SEPA and UK format"
+        leftIcon={<Text variant="bodySm">🏦</Text>}
+        rightIcon={<Badge label="UK 🇬🇧" variant="primary" size="sm" />}
+      />
+
+      <Input
+        label="Read-only Reference (Disabled)"
+        value="REF-2026-X9920"
+        isDisabled={true}
+        helperText="Demonstrates disabled token styling"
+      />
+    </Card>
+  );
+
+  const renderCardsSection = () => (
+    <View style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            4. Cards & Elevation Surfaces
+          </Text>
+          <Text variant="caption" color="textMuted">
+            Flat, outlined, and elevated with 0.98 micro-press feedback
+          </Text>
+        </View>
+        <Pressable onPress={() => router.push('/showcase/card' as any)}>
+          <Text variant="captionMedium" color="textSecondary">
+            Isolated View →
+          </Text>
+        </Pressable>
+      </View>
+
+      <View style={isDesktop ? styles.cardsRowDesktop : styles.cardsStackMobile}>
+        <Card variant="flat" style={styles.cardVariantItem}>
+          <Badge label="Flat" variant="secondary" size="sm" />
+          <Text variant="bodyBold" color="textPrimary" style={styles.cardTitle}>
+            Flat Surface
+          </Text>
+          <Text variant="caption" color="textSecondary">
+            Subtle background blend with surfaceSubtle.
+          </Text>
+        </Card>
+
+        <Card variant="outlined" style={styles.cardVariantItem}>
+          <Badge label="Outlined" variant="outline" size="sm" />
+          <Text variant="bodyBold" color="textPrimary" style={styles.cardTitle}>
+            Outlined Surface
+          </Text>
+          <Text variant="caption" color="textSecondary">
+            Precise 1px borderSubtle perimeter border.
+          </Text>
+        </Card>
+
+        <Card
+          variant="elevated"
+          style={styles.cardVariantItem}
+          onPress={() => setCardPressCount((c) => c + 1)}
+        >
+          <Badge label="Elevated (Pressable)" variant="primary" size="sm" />
+          <Text variant="bodyBold" color="textPrimary" style={styles.cardTitle}>
+            Press Counter ({cardPressCount})
+          </Text>
+          <Text variant="caption" color="textSecondary">
+            Shadow token with smooth Hermes touch spring.
+          </Text>
+        </Card>
+      </View>
+    </View>
+  );
+
+  const renderDebitCardSection = () => (
+    <Card variant="outlined" style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            5. Debit Card Visual
+          </Text>
+          <Text variant="caption" color="textMuted">
+            ISO 1.586 aspect ratio, EMV chip, and contactless waves
+          </Text>
+        </View>
+      </View>
+
+      {/* Card Interactive Controls */}
+      <View style={[styles.testControlsRow, { borderBottomColor: colors.borderSubtle }]}>
+        <Button
+          label={cardFrozen ? 'Unfreeze Card' : 'Freeze Card ❄️'}
+          variant={cardFrozen ? 'primary' : 'outline'}
+          size="sm"
+          onPress={() => setCardFrozen((f) => !f)}
+        />
+        <Button
+          label={cardVariant === 'lime' ? 'Forest Variant' : 'Lime Variant'}
+          variant="secondary"
+          size="sm"
+          onPress={() => setCardVariant((v) => (v === 'lime' ? 'forest' : 'lime'))}
+        />
+      </View>
+
+      <View style={styles.debitCardFrame}>
+        <DebitCardVisual
+          cardHolder="TALHA ABDUREHMAN"
+          lastFourDigits="4821"
+          expiryDate="08/29"
+          isFrozen={cardFrozen}
+          themeVariant={cardVariant}
+        />
+      </View>
+    </Card>
+  );
+
+  const renderFintechPrimitivesSection = () => (
+    <Card variant="outlined" style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            6. Currency Rail & Action Bar
+          </Text>
+          <Text variant="caption" color="textMuted">
+            Horizontal balance cards & 52pt circular action triggers
+          </Text>
+        </View>
+      </View>
+
+      {/* Currency Balance Rail */}
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        CURRENCY BALANCES
+      </Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.currencyRail}
+      >
+        <CurrencyCard
+          currencyCode="GBP"
+          currencyName="British Pound"
+          amount="£4,250.80"
+          flagEmoji="🇬🇧"
+        />
+        <CurrencyCard
+          currencyCode="EUR"
+          currencyName="Euro"
+          amount="€940.15"
+          flagEmoji="🇪🇺"
+        />
+        <CurrencyCard
+          currencyCode="USD"
+          currencyName="US Dollar"
+          amount="$1,180.00"
+          flagEmoji="🇺🇸"
+        />
+        <CurrencyCard
+          currencyCode="ADD"
+          currencyName="Open account"
+          amount=""
+          isAddCard={true}
+        />
+      </ScrollView>
+
+      {/* Action Circles */}
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        CIRCULAR ACTION BUTTONS
+      </Text>
+      <View style={[styles.actionsBar, { backgroundColor: colors.surfaceSubtle, borderRadius: radius.xl }]}>
+        <ActionCircleButton
+          label="Send"
+          isPrimary={true}
+          icon={<Text variant="bodyBold" style={{ color: colors.primaryForeground }}>↗</Text>}
+          onPress={() => router.push('/payments' as any)}
+        />
+        <ActionCircleButton
+          label="Add"
+          icon={<Text variant="titleSm" color="textPrimary">+</Text>}
+        />
+        <ActionCircleButton
+          label="Request"
+          icon={<Text variant="titleSm" color="textPrimary">↙</Text>}
+        />
+        <ActionCircleButton
+          label="Cards"
+          icon={<Text variant="titleSm" color="textPrimary">💳</Text>}
+          onPress={() => router.push('/cards' as any)}
+        />
+      </View>
+    </Card>
+  );
+
+  const renderTransactionsSection = () => (
+    <Card variant="outlined" style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            7. Transaction Rows
+          </Text>
+          <Text variant="caption" color="textMuted">
+            Avatar slot, category metadata, badges, and debit/credit status
+          </Text>
+        </View>
+      </View>
+
+      <TransactionRow
+        title="Spotify Premium"
+        subtitle="Subscription • Card •••• 4821"
+        amount="-£10.99"
+        avatarIcon={<Text variant="bodySm">🎵</Text>}
+      />
+      <View style={[styles.rowDivider, { borderTopColor: colors.borderSubtle }]} />
+
+      <TransactionRow
+        title="Pret A Manger"
+        subtitle="Food & Drink • Contactless NFC"
+        amount="-£4.50"
+        avatarIcon={<Text variant="bodySm">☕</Text>}
+      />
+      <View style={[styles.rowDivider, { borderTopColor: colors.borderSubtle }]} />
+
+      <TransactionRow
+        title="Google DeepMind"
+        subtitle="Direct deposit • Completed"
+        amount="+£3,500.00"
+        isPositive={true}
+        statusBadge="Received"
+        avatarIcon={<Text variant="bodySm">💼</Text>}
+      />
+      <View style={[styles.rowDivider, { borderTopColor: colors.borderSubtle }]} />
+
+      <TransactionRow
+        title="Amazon UK"
+        subtitle="Online order • Pending clearance"
+        amount="-£42.99"
+        statusBadge="Pending"
+        avatarIcon={<Text variant="bodySm">📦</Text>}
+      />
+    </Card>
+  );
+
+  const renderTypographySection = () => (
+    <Card variant="outlined" style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            8. Typography Presets
+          </Text>
+          <Text variant="caption" color="textMuted">
+            12 typography presets strictly bound to theme contract
+          </Text>
+        </View>
+        <Pressable onPress={() => router.push('/showcase/typography' as any)}>
+          <Text variant="captionMedium" color="textSecondary">
+            Isolated View →
+          </Text>
+        </Pressable>
+      </View>
+
+      <View style={isDesktop ? styles.typeGridDesktop : styles.typeStackMobile}>
+        <View style={styles.typeBlock}>
+          <Text variant="caption" color="textMuted">hero (40pt / w900)</Text>
+          <Text variant="hero">£12,480.00</Text>
+        </View>
+        <View style={styles.typeBlock}>
+          <Text variant="caption" color="textMuted">display (32pt / w800)</Text>
+          <Text variant="display">Design Tokens</Text>
+        </View>
+        <View style={styles.typeBlock}>
+          <Text variant="caption" color="textMuted">titleLg (24pt / w800)</Text>
+          <Text variant="titleLg">Large Headline</Text>
+        </View>
+        <View style={styles.typeBlock}>
+          <Text variant="caption" color="textMuted">titleMd (20pt / w700)</Text>
+          <Text variant="titleMd">Section Title</Text>
+        </View>
+        <View style={styles.typeBlock}>
+          <Text variant="caption" color="textMuted">bodyBold (16pt / w700)</Text>
+          <Text variant="bodyBold">Body Bold Emphasis</Text>
+        </View>
+        <View style={styles.typeBlock}>
+          <Text variant="caption" color="textMuted">body (16pt / w400)</Text>
+          <Text variant="body">Fluid readability paragraph body.</Text>
+        </View>
+      </View>
+    </Card>
+  );
+
+  return (
+    <SafeAreaView edges={['top', 'left', 'right', 'bottom']} style={[styles.safeArea, { backgroundColor: colors.background }]}>
+      {/* ============================================================== */}
+      {/* TOP HEADER BAR (RESPONSIVE)                                    */}
+      {/* ============================================================== */}
+      <View style={[styles.topBar, { backgroundColor: colors.surface, borderBottomColor: colors.borderSubtle }]}>
+        <View style={styles.topBarLeft}>
+          <Text variant="titleMd" color="textPrimary">
+            Corporate UI Kit
+          </Text>
+          <Badge
+            label={isDesktop ? '🖥️ Desktop Layout' : '📱 Mobile Layout'}
+            variant="primary"
+            size="sm"
+          />
+          <Badge
+            label={`${Math.round(windowWidth)}px`}
+            variant="secondary"
+            size="sm"
+          />
+        </View>
+
+        {/* Viewport Mode Switcher */}
+        <View style={styles.topBarRight}>
+          <View style={[styles.modeSwitcher, { backgroundColor: colors.surfaceSubtle, borderColor: colors.borderSubtle }]}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Desktop View"
+              onPress={() => setViewMode('desktop')}
+              style={[
+                styles.modeButton,
+                isDesktop && [styles.modeButtonActive, { backgroundColor: colors.surface }],
+              ]}
+            >
+              <Text
+                variant="captionMedium"
+                style={{ color: isDesktop ? colors.textPrimary : colors.textMuted }}
+              >
+                🖥️ Desktop
+              </Text>
+            </Pressable>
+
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Mobile View"
+              onPress={() => setViewMode('mobile')}
+              style={[
+                styles.modeButton,
+                !isDesktop && [styles.modeButtonActive, { backgroundColor: colors.surface }],
+              ]}
+            >
+              <Text
+                variant="captionMedium"
+                style={{ color: !isDesktop ? colors.textPrimary : colors.textMuted }}
+              >
+                📱 Mobile
+              </Text>
+            </Pressable>
+
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Auto Responsive"
+              onPress={() => setViewMode('auto')}
+              style={[
+                styles.modeButton,
+                viewMode === 'auto' && [styles.modeButtonActive, { backgroundColor: colors.primary }],
+              ]}
+            >
+              <Text
+                variant="captionMedium"
+                style={{ color: viewMode === 'auto' ? colors.primaryForeground : colors.textMuted }}
+              >
+                ⚡ Auto
+              </Text>
+            </Pressable>
+          </View>
+
+          {/* Quick Demo App Links */}
+          <Button
+            label="Cards Demo ↗"
+            variant="outline"
+            size="sm"
+            onPress={() => router.push('/cards' as any)}
+          />
+          <Button
+            label="Payments ↗"
+            variant="outline"
+            size="sm"
+            onPress={() => router.push('/payments' as any)}
+          />
+        </View>
+      </View>
+
+      {/* ============================================================== */}
+      {/* DESKTOP WORKBENCH LAYOUT                                       */}
+      {/* ============================================================== */}
+      {isDesktop ? (
+        <View style={styles.desktopContainer}>
+          {/* Desktop Left Sidebar */}
+          <View style={[styles.desktopSidebar, { backgroundColor: colors.surface, borderRightColor: colors.borderSubtle }]}>
+            <Text variant="captionMedium" color="textMuted" style={styles.sidebarHeader}>
+              NAVIGATION
+            </Text>
+
+            <Pressable
+              onPress={() => setActiveNavSection('all')}
+              style={[
+                styles.sidebarItem,
+                activeNavSection === 'all' && { backgroundColor: colors.surfaceSubtle },
+              ]}
+            >
+              <Text variant="bodySmMedium" color={activeNavSection === 'all' ? 'textPrimary' : 'textSecondary'}>
+                ✦ All Primitives
+              </Text>
+            </Pressable>
+
+            <Pressable
+              onPress={() => router.push('/showcase/button' as any)}
+              style={styles.sidebarItem}
+            >
+              <Text variant="bodySm" color="textSecondary">🔘 Buttons</Text>
+              <Badge label="5" variant="secondary" size="sm" />
+            </Pressable>
+
+            <Pressable
+              onPress={() => router.push('/showcase/badge' as any)}
+              style={styles.sidebarItem}
+            >
+              <Text variant="bodySm" color="textSecondary">🏷️ Badges</Text>
+              <Badge label="7" variant="secondary" size="sm" />
+            </Pressable>
+
+            <Pressable
+              onPress={() => router.push('/showcase/input' as any)}
+              style={styles.sidebarItem}
+            >
+              <Text variant="bodySm" color="textSecondary">📝 Inputs</Text>
+              <Badge label="Forms" variant="secondary" size="sm" />
+            </Pressable>
+
+            <Pressable
+              onPress={() => router.push('/showcase/card' as any)}
+              style={styles.sidebarItem}
+            >
+              <Text variant="bodySm" color="textSecondary">🗂️ Cards</Text>
+              <Badge label="3" variant="secondary" size="sm" />
+            </Pressable>
+
+            <Pressable
+              onPress={() => router.push('/showcase/typography' as any)}
+              style={styles.sidebarItem}
+            >
+              <Text variant="bodySm" color="textSecondary">🔤 Typography</Text>
+              <Badge label="12" variant="secondary" size="sm" />
+            </Pressable>
+
+            {/* Token System Spec Box */}
+            <View style={[styles.sidebarTokenBox, { backgroundColor: colors.surfaceSubtle, borderRadius: radius.lg }]}>
+              <Text variant="captionMedium" color="textPrimary">
+                TOKEN CONTRACT
+              </Text>
+              <Text variant="caption" color="textSecondary" style={{ marginTop: spacing.xxs }}>
+                • Zero arbitrary values{'\n'}
+                • 12 Typography presets{'\n'}
+                • 11 Spacing increments{'\n'}
+                • 8 Border radii{'\n'}
+                • 60-120 FPS Hermes
+              </Text>
+            </View>
+
+            {/* Demo Apps Direct Nav */}
+            <Text variant="captionMedium" color="textMuted" style={[styles.sidebarHeader, { marginTop: spacing.lg }]}>
+              MOCK APPS
+            </Text>
             <Button
-              label="Cards Screen"
-              variant="outline"
+              label="Cards Management"
+              variant="secondary"
               size="sm"
+              isFullWidth={true}
               onPress={() => router.push('/cards' as any)}
+              style={{ marginBottom: spacing.xs }}
             />
             <Button
-              label="Payments Screen"
-              variant="outline"
+              label="Payments Hub"
+              variant="secondary"
               size="sm"
+              isFullWidth={true}
               onPress={() => router.push('/payments' as any)}
+              style={{ marginBottom: spacing.xs }}
             />
             <Button
-              label="Recipients Screen"
-              variant="outline"
+              label="Recipients Directory"
+              variant="secondary"
               size="sm"
+              isFullWidth={true}
               onPress={() => router.push('/recipients' as any)}
             />
           </View>
-        </Card>
 
-        {/* ============================================================== */}
-        {/* SECTION 1: BUTTONS                                              */}
-        {/* ============================================================== */}
-        <View style={styles.sectionHeader}>
-          <Text variant="titleMd" color="textPrimary">
-            1. Buttons
-          </Text>
-          <Pressable onPress={() => router.push('/showcase/button' as any)}>
-            <Text variant="captionMedium" color="textSecondary">
-              Dedicated Screen →
-            </Text>
-          </Pressable>
-        </View>
-        <Text variant="caption" color="textMuted" style={styles.sectionSubtitle}>
-          Pill-shaped (radius.full), 5 semantic variants, 3 sizes, loading & disabled micro-states.
-        </Text>
-
-        <Card variant="outlined" style={styles.componentCard}>
-          {/* Controls toggle bar */}
-          <View style={[styles.testControlsRow, { borderBottomColor: colors.borderSubtle }]}>
-            <Text variant="captionMedium" color="textSecondary">
-              Interactive Test:
-            </Text>
-            <Button
-              label={btnLoading ? 'Stop Loading' : 'Simulate Loading'}
-              variant="secondary"
-              size="sm"
-              onPress={() => setBtnLoading((prev) => !prev)}
-            />
-            <Button
-              label={btnDisabled ? 'Enable Buttons' : 'Disable Buttons'}
-              variant="secondary"
-              size="sm"
-              onPress={() => setBtnDisabled((prev) => !prev)}
-            />
-          </View>
-
-          {/* Variants */}
-          <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
-            VARIANTS (SIZE MD)
-          </Text>
-          <View style={styles.buttonStack}>
-            <Button
-              label="Primary Variant"
-              variant="primary"
-              isLoading={btnLoading}
-              isDisabled={btnDisabled}
-            />
-            <Button
-              label="Secondary Variant"
-              variant="secondary"
-              isLoading={btnLoading}
-              isDisabled={btnDisabled}
-            />
-            <Button
-              label="Outline Variant"
-              variant="outline"
-              isLoading={btnLoading}
-              isDisabled={btnDisabled}
-            />
-            <Button
-              label="Ghost Variant"
-              variant="ghost"
-              isLoading={btnLoading}
-              isDisabled={btnDisabled}
-            />
-            <Button
-              label="Danger Variant"
-              variant="danger"
-              isLoading={btnLoading}
-              isDisabled={btnDisabled}
-            />
-          </View>
-
-          {/* Sizes */}
-          <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
-            SIZES (PRIMARY)
-          </Text>
-          <View style={styles.sizesRow}>
-            <Button label="Small (36)" size="sm" variant="primary" />
-            <Button label="Medium (44)" size="md" variant="primary" />
-            <Button label="Large (52)" size="lg" variant="primary" />
-          </View>
-
-          {/* Full Width & Icons */}
-          <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
-            WITH ICONS & FULL WIDTH
-          </Text>
-          <Button
-            label="Send Payment Now"
-            variant="primary"
-            size="lg"
-            isFullWidth={true}
-            leftIcon={<Text variant="bodyBold" style={{ color: colors.primaryForeground }}>↗</Text>}
-          />
-        </Card>
-
-        {/* ============================================================== */}
-        {/* SECTION 2: BADGES                                               */}
-        {/* ============================================================== */}
-        <View style={styles.sectionHeader}>
-          <Text variant="titleMd" color="textPrimary">
-            2. Badges & Chips
-          </Text>
-          <Pressable onPress={() => router.push('/showcase/badge' as any)}>
-            <Text variant="captionMedium" color="textSecondary">
-              Dedicated Screen →
-            </Text>
-          </Pressable>
-        </View>
-        <Text variant="caption" color="textMuted" style={styles.sectionSubtitle}>
-          Compact metadata labels with high-contrast accessibility foregrounds.
-        </Text>
-
-        <Card variant="outlined" style={styles.componentCard}>
-          <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
-            SEMANTIC VARIANTS (MEDIUM)
-          </Text>
-          <View style={styles.badgeWrap}>
-            <Badge label="Primary" variant="primary" size="md" />
-            <Badge label="Secondary" variant="secondary" size="md" />
-            <Badge label="Success" variant="success" size="md" />
-            <Badge label="Warning" variant="warning" size="md" />
-            <Badge label="Error" variant="error" size="md" />
-            <Badge label="Info" variant="info" size="md" />
-            <Badge label="Outline" variant="outline" size="md" />
-          </View>
-
-          <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
-            COMPACT SIZE (SMALL)
-          </Text>
-          <View style={styles.badgeWrap}>
-            <Badge label="Live 🟢" variant="success" size="sm" />
-            <Badge label="Pending ⏳" variant="warning" size="sm" />
-            <Badge label="Failed ✕" variant="error" size="sm" />
-            <Badge label="Verified ✓" variant="info" size="sm" />
-          </View>
-        </Card>
-
-        {/* ============================================================== */}
-        {/* SECTION 3: INPUT FIELDS                                         */}
-        {/* ============================================================== */}
-        <View style={styles.sectionHeader}>
-          <Text variant="titleMd" color="textPrimary">
-            3. Input Fields
-          </Text>
-          <Pressable onPress={() => router.push('/showcase/input' as any)}>
-            <Text variant="captionMedium" color="textSecondary">
-              Dedicated Screen →
-            </Text>
-          </Pressable>
-        </View>
-        <Text variant="caption" color="textMuted" style={styles.sectionSubtitle}>
-          Token-driven text input primitives with focus rings, helper hints, and inline validation states.
-        </Text>
-
-        <Card variant="outlined" style={styles.componentCard}>
-          <Input
-            label="Account holder name"
-            placeholder="e.g. Talha Abdurehman"
-            value={inputValue}
-            onChangeText={(txt) => {
-              setInputValue(txt);
-              if (txt.length > 0 && txt.length < 3) {
-                setInputError('Name must be at least 3 characters');
-              } else {
-                setInputError('');
-              }
-            }}
-            helperText={inputError ? undefined : 'Enter your full legal name as on passport'}
-            errorText={inputError}
-            leftIcon={<Text variant="bodySm">👤</Text>}
-          />
-
-          <Input
-            label="IBAN / Account Number"
-            placeholder="GB29 NWBK 6016 1331 9268 19"
-            defaultValue="GB29 NWBK 6016 1331 9268 19"
-            helperText="UK & SEPA International account format"
-            leftIcon={<Text variant="bodySm">🏦</Text>}
-            rightIcon={<Badge label="UK" variant="primary" size="sm" />}
-          />
-
-          <Input
-            label="Read-only Reference"
-            value="REF-2026-X9920"
-            isDisabled={true}
-            helperText="Auto-generated transfer identifier (disabled state)"
-          />
-        </Card>
-
-        {/* ============================================================== */}
-        {/* SECTION 4: CARDS & CONTAINERS                                   */}
-        {/* ============================================================== */}
-        <View style={styles.sectionHeader}>
-          <Text variant="titleMd" color="textPrimary">
-            4. Cards & Elevation Surfaces
-          </Text>
-          <Pressable onPress={() => router.push('/showcase/card' as any)}>
-            <Text variant="captionMedium" color="textSecondary">
-              Dedicated Screen →
-            </Text>
-          </Pressable>
-        </View>
-        <Text variant="caption" color="textMuted" style={styles.sectionSubtitle}>
-          Outlined, elevated, and flat card primitives supporting pressable touch feedback.
-        </Text>
-
-        <View style={styles.cardGrid}>
-          <Card variant="flat" style={styles.cardItem}>
-            <Badge label="Flat" variant="secondary" size="sm" />
-            <Text variant="bodyBold" color="textPrimary" style={styles.cardTitle}>
-              Flat Surface
-            </Text>
-            <Text variant="caption" color="textSecondary">
-              Blends softly with surfaceSubtle token background.
-            </Text>
-          </Card>
-
-          <Card variant="outlined" style={styles.cardItem}>
-            <Badge label="Outlined" variant="outline" size="sm" />
-            <Text variant="bodyBold" color="textPrimary" style={styles.cardTitle}>
-              Outlined Surface
-            </Text>
-            <Text variant="caption" color="textSecondary">
-              Crisp 1px borderSubtle containment border.
-            </Text>
-          </Card>
-
-          <Card
-            variant="elevated"
-            style={styles.cardItem}
-            onPress={() => setCardPressCount((c) => c + 1)}
+          {/* Desktop Right Main Content Workbench */}
+          <ScrollView
+            style={styles.desktopMainScroll}
+            contentContainerStyle={[styles.desktopMainContent, { padding: spacing.lg }]}
+            showsVerticalScrollIndicator={false}
           >
-            <Badge label="Elevated + Pressable" variant="primary" size="sm" />
-            <Text variant="bodyBold" color="textPrimary" style={styles.cardTitle}>
-              Press Me ({cardPressCount})
-            </Text>
-            <Text variant="caption" color="textSecondary">
-              Soft iOS ambient shadow with 0.98 scale pressed interaction.
-            </Text>
-          </Card>
+            {/* Desktop Hero Banner */}
+            <Card variant="flat" style={styles.desktopHeroCard}>
+              <View style={styles.heroTopRow}>
+                <View>
+                  <Text variant="captionMedium" color="textMuted">
+                    PRODUCTION UI KIT TEMPLATE • TALHA ABDUREHMAN
+                  </Text>
+                  <Text variant="titleLg" color="textPrimary" style={styles.heroTitle}>
+                    Design System Component Workbench
+                  </Text>
+                  <Text variant="body" color="textSecondary">
+                    Deconstructed from Wise design language. Strictly typed, cross-platform React Native for web and mobile.
+                  </Text>
+                </View>
+                <View style={styles.heroBadgesCol}>
+                  <Badge label="Hermes Engine" variant="primary" size="md" />
+                  <Badge label="Expo SDK 57" variant="secondary" size="md" />
+                  <Badge label="Strict TypeScript" variant="info" size="md" />
+                </View>
+              </View>
+            </Card>
+
+            {/* 2-Column Responsive Grid */}
+            <View style={styles.desktopTwoColGrid}>
+              {/* Left Column: Form & Interaction Primitives */}
+              <View style={styles.desktopCol}>
+                {renderButtonsSection()}
+                {renderBadgesSection()}
+                {renderInputsSection()}
+              </View>
+
+              {/* Right Column: Fintech & Visual Primitives */}
+              <View style={styles.desktopCol}>
+                {renderDebitCardSection()}
+                {renderFintechPrimitivesSection()}
+                {renderTransactionsSection()}
+              </View>
+            </View>
+
+            {/* Full-width Cards & Typography */}
+            {renderCardsSection()}
+            {renderTypographySection()}
+
+            {/* Desktop Footer */}
+            <View style={styles.desktopFooter}>
+              <Text variant="caption" color="textMuted" align="center">
+                Corporate UI Kit System • Author: Talha Abdurehman (talhakyle124@gmail.com)
+              </Text>
+              <Text variant="caption" color="textMuted" align="center" style={{ marginTop: spacing.xxs }}>
+                Zero Arbitrary Values • Responsive Desktop & Mobile Architecture
+              </Text>
+            </View>
+          </ScrollView>
         </View>
+      ) : (
+        <View style={styles.mobileOuterWrapper}>
+          <ScrollView
+            style={styles.mobileScrollView}
+            contentContainerStyle={[
+              styles.mobileContentContainer,
+              { paddingHorizontal: spacing.md, paddingVertical: spacing.md },
+            ]}
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Mobile Header Card */}
+            <Card variant="flat" style={styles.mobileHeroCard}>
+              <Text variant="captionMedium" color="textMuted">
+                UI KIT MOBILE SHOWCASE
+              </Text>
+              <Text variant="titleLg" color="textPrimary" style={{ marginVertical: spacing.xs }}>
+                Component Catalog
+              </Text>
+              <Text variant="bodySm" color="textSecondary">
+                Mobile-optimized 44x44pt touch targets, smooth 60-120 FPS animations.
+              </Text>
 
-        {/* ============================================================== */}
-        {/* SECTION 5: DEBIT CARD VISUAL                                    */}
-        {/* ============================================================== */}
-        <View style={styles.sectionHeader}>
-          <Text variant="titleMd" color="textPrimary">
-            5. Debit Card Visual Primitive
-          </Text>
+              {/* Mobile Quick Nav */}
+              <View style={styles.mobileQuickNav}>
+                <Button
+                  label="Cards"
+                  variant="outline"
+                  size="sm"
+                  onPress={() => router.push('/cards' as any)}
+                />
+                <Button
+                  label="Payments"
+                  variant="outline"
+                  size="sm"
+                  onPress={() => router.push('/payments' as any)}
+                />
+                <Button
+                  label="Recipients"
+                  variant="outline"
+                  size="sm"
+                  onPress={() => router.push('/recipients' as any)}
+                />
+              </View>
+            </Card>
+
+            {/* Stacked Mobile Primitives */}
+            {renderButtonsSection()}
+            {renderBadgesSection()}
+            {renderInputsSection()}
+            {renderCardsSection()}
+            {renderDebitCardSection()}
+            {renderFintechPrimitivesSection()}
+            {renderTransactionsSection()}
+            {renderTypographySection()}
+
+            {/* Mobile Footer */}
+            <View style={styles.mobileFooter}>
+              <Text variant="caption" color="textMuted" align="center">
+                Mobile Layout Active • Talha Abdurehman
+              </Text>
+            </View>
+          </ScrollView>
         </View>
-        <Text variant="caption" color="textMuted" style={styles.sectionSubtitle}>
-          Fintech payment card with ISO aspect ratio (1.586), EMV chip, contactless waves, and freeze overlay.
-        </Text>
-
-        <Card variant="outlined" style={styles.componentCard}>
-          {/* Card interactive toggles */}
-          <View style={[styles.testControlsRow, { borderBottomColor: colors.borderSubtle }]}>
-            <Button
-              label={cardFrozen ? 'Unfreeze Card' : 'Freeze Card ❄️'}
-              variant={cardFrozen ? 'primary' : 'outline'}
-              size="sm"
-              onPress={() => setCardFrozen((f) => !f)}
-            />
-            <Button
-              label={cardVariant === 'lime' ? 'Switch to Forest' : 'Switch to Lime'}
-              variant="secondary"
-              size="sm"
-              onPress={() => setCardVariant((v) => (v === 'lime' ? 'forest' : 'lime'))}
-            />
-          </View>
-
-          <View style={styles.debitCardWrapper}>
-            <DebitCardVisual
-              cardHolder="TALHA ABDUREHMAN"
-              lastFourDigits="4821"
-              expiryDate="08/29"
-              isFrozen={cardFrozen}
-              themeVariant={cardVariant}
-            />
-          </View>
-        </Card>
-
-        {/* ============================================================== */}
-        {/* SECTION 6: CURRENCY BALANCE CARDS                               */}
-        {/* ============================================================== */}
-        <View style={styles.sectionHeader}>
-          <Text variant="titleMd" color="textPrimary">
-            6. Multi-Currency Balance Cards
-          </Text>
-        </View>
-        <Text variant="caption" color="textMuted" style={styles.sectionSubtitle}>
-          Standardized balance card primitives with flag circle and dashed addition card.
-        </Text>
-
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.currencySlider}
-        >
-          <CurrencyCard
-            currencyCode="GBP"
-            currencyName="British Pound"
-            amount="£4,250.80"
-            flagEmoji="🇬🇧"
-          />
-          <CurrencyCard
-            currencyCode="EUR"
-            currencyName="Euro"
-            amount="€940.15"
-            flagEmoji="🇪🇺"
-          />
-          <CurrencyCard
-            currencyCode="USD"
-            currencyName="US Dollar"
-            amount="$1,180.00"
-            flagEmoji="🇺🇸"
-          />
-          <CurrencyCard
-            currencyCode="ADD"
-            currencyName="Open account"
-            amount=""
-            isAddCard={true}
-          />
-        </ScrollView>
-
-        {/* ============================================================== */}
-        {/* SECTION 7: ACTION CIRCLE BUTTONS                                */}
-        {/* ============================================================== */}
-        <View style={styles.sectionHeader}>
-          <Text variant="titleMd" color="textPrimary">
-            7. Circular Action Buttons
-          </Text>
-        </View>
-        <Text variant="caption" color="textMuted" style={styles.sectionSubtitle}>
-          52pt quick-action circular triggers with hitSlop touch area and spring micro-press.
-        </Text>
-
-        <Card variant="flat" style={styles.componentCard}>
-          <View style={styles.actionsBarRow}>
-            <ActionCircleButton
-              label="Send"
-              isPrimary={true}
-              icon={<Text variant="bodyBold" style={{ color: colors.primaryForeground }}>↗</Text>}
-              onPress={() => router.push('/payments' as any)}
-            />
-            <ActionCircleButton
-              label="Add"
-              icon={<Text variant="titleSm" color="textPrimary">+</Text>}
-            />
-            <ActionCircleButton
-              label="Request"
-              icon={<Text variant="titleSm" color="textPrimary">↙</Text>}
-            />
-            <ActionCircleButton
-              label="Cards"
-              icon={<Text variant="titleSm" color="textPrimary">💳</Text>}
-              onPress={() => router.push('/cards' as any)}
-            />
-          </View>
-        </Card>
-
-        {/* ============================================================== */}
-        {/* SECTION 8: TRANSACTION FEED ROW                                 */}
-        {/* ============================================================== */}
-        <View style={styles.sectionHeader}>
-          <Text variant="titleMd" color="textPrimary">
-            8. Transaction Rows
-          </Text>
-        </View>
-        <Text variant="caption" color="textMuted" style={styles.sectionSubtitle}>
-          Feed rows displaying avatar, merchant, categorization, status badges, and currency values.
-        </Text>
-
-        <Card variant="outlined" style={styles.componentCard}>
-          <TransactionRow
-            title="Spotify Premium"
-            subtitle="Subscription • Card ending 4821"
-            amount="-£10.99"
-            avatarIcon={<Text variant="bodySm">🎵</Text>}
-          />
-          <View style={[styles.rowDivider, { borderTopColor: colors.borderSubtle }]} />
-
-          <TransactionRow
-            title="Pret A Manger"
-            subtitle="Food & Drink • Contactless NFC"
-            amount="-£4.50"
-            avatarIcon={<Text variant="bodySm">☕</Text>}
-          />
-          <View style={[styles.rowDivider, { borderTopColor: colors.borderSubtle }]} />
-
-          <TransactionRow
-            title="Google DeepMind"
-            subtitle="Direct deposit • Completed"
-            amount="+£3,500.00"
-            isPositive={true}
-            statusBadge="Received"
-            avatarIcon={<Text variant="bodySm">💼</Text>}
-          />
-          <View style={[styles.rowDivider, { borderTopColor: colors.borderSubtle }]} />
-
-          <TransactionRow
-            title="Amazon UK"
-            subtitle="Online shopping • Pending clearing"
-            amount="-£42.99"
-            statusBadge="Pending"
-            avatarIcon={<Text variant="bodySm">📦</Text>}
-          />
-        </Card>
-
-        {/* ============================================================== */}
-        {/* SECTION 9: TYPOGRAPHY HIERARCHY                                 */}
-        {/* ============================================================== */}
-        <View style={styles.sectionHeader}>
-          <Text variant="titleMd" color="textPrimary">
-            9. Typography Scale
-          </Text>
-          <Pressable onPress={() => router.push('/showcase/typography' as any)}>
-            <Text variant="captionMedium" color="textSecondary">
-              Dedicated Screen →
-            </Text>
-          </Pressable>
-        </View>
-        <Text variant="caption" color="textMuted" style={styles.sectionSubtitle}>
-          12 typography presets strictly locked into the theme contract.
-        </Text>
-
-        <Card variant="flat" style={styles.componentCard}>
-          <View style={styles.typeSample}>
-            <Text variant="caption" color="textMuted">hero (40pt / w900)</Text>
-            <Text variant="hero">£12,480.00</Text>
-          </View>
-          <View style={styles.typeSample}>
-            <Text variant="caption" color="textMuted">display (32pt / w800)</Text>
-            <Text variant="display">Design System</Text>
-          </View>
-          <View style={styles.typeSample}>
-            <Text variant="caption" color="textMuted">titleLg (24pt / w800)</Text>
-            <Text variant="titleLg">Large Headline</Text>
-          </View>
-          <View style={styles.typeSample}>
-            <Text variant="caption" color="textMuted">titleMd (20pt / w700)</Text>
-            <Text variant="titleMd">Section Title Medium</Text>
-          </View>
-          <View style={styles.typeSample}>
-            <Text variant="caption" color="textMuted">bodyBold (16pt / w700)</Text>
-            <Text variant="bodyBold">Standard Body Bold</Text>
-          </View>
-          <View style={styles.typeSample}>
-            <Text variant="caption" color="textMuted">body (16pt / w400)</Text>
-            <Text variant="body">Regular body text for fluid paragraph readability.</Text>
-          </View>
-          <View style={styles.typeSample}>
-            <Text variant="caption" color="textMuted">captionMedium (12pt / w600)</Text>
-            <Text variant="captionMedium">METADATA LABELS & STATUS</Text>
-          </View>
-        </Card>
-
-        {/* Footer Note */}
-        <View style={styles.footer}>
-          <Text variant="caption" color="textMuted" align="center">
-            Corporate UI Kit Template • Talha Abdurehman
-          </Text>
-          <Text variant="caption" color="textMuted" align="center" style={{ marginTop: spacing.xxs }}>
-            Hermes Engine • New Architecture • Zero Arbitrary Values
-          </Text>
-        </View>
-      </ScrollView>
+      )}
     </SafeAreaView>
   );
 }
@@ -581,57 +845,148 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
-  headerBar: {
+  topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.ms,
     borderBottomWidth: 1,
+    flexWrap: 'wrap',
+    gap: theme.spacing.sm,
   },
-  headerLeft: {
-    gap: theme.spacing.xs,
-  },
-  badgeRow: {
+  topBarLeft: {
     flexDirection: 'row',
-    gap: theme.spacing.xs,
+    alignItems: 'center',
+    gap: theme.spacing.sm,
   },
-  headerDemoBtn: {
+  topBarRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    flexWrap: 'wrap',
+  },
+  modeSwitcher: {
+    flexDirection: 'row',
+    borderRadius: theme.radius.full,
+    borderWidth: 1,
+    padding: theme.spacing.xxs,
+  },
+  modeButton: {
     paddingHorizontal: theme.spacing.ms,
-    paddingVertical: theme.spacing.sm,
+    paddingVertical: theme.spacing.xs,
     borderRadius: theme.radius.full,
   },
-  scrollContent: {
+  modeButtonActive: {
+    shadowOpacity: 0.1,
+  },
+
+  // Desktop Structure
+  desktopContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  desktopSidebar: {
+    width: theme.layout.sidebarWidth,
+    borderRightWidth: 1,
+    padding: theme.spacing.md,
+  },
+  sidebarHeader: {
+    marginBottom: theme.spacing.sm,
+    letterSpacing: 0.8,
+  },
+  sidebarItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.sm,
+    borderRadius: theme.radius.md,
+    marginBottom: theme.spacing.xxs,
+  },
+  sidebarItemActive: {
+    borderLeftWidth: 2,
+  },
+  sidebarTokenBox: {
+    marginTop: theme.spacing.lg,
+    padding: theme.spacing.md,
+  },
+  desktopMainScroll: {
+    flex: 1,
+  },
+  desktopMainContent: {
+    maxWidth: theme.layout.maxContentWidth,
+    width: '100%',
+    alignSelf: 'center',
     paddingBottom: theme.spacing.xxxl,
   },
-  introCard: {
+  desktopHeroCard: {
     padding: theme.spacing.lg,
     borderRadius: theme.radius.xl,
     marginBottom: theme.spacing.lg,
   },
-  introTitle: {
-    marginVertical: theme.spacing.xs,
-  },
-  quickNavRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: theme.spacing.sm,
-    marginTop: theme.spacing.md,
-  },
-  sectionHeader: {
+  heroTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  heroTitle: {
+    marginVertical: theme.spacing.xs,
+  },
+  heroBadgesCol: {
+    gap: theme.spacing.xs,
+    alignItems: 'flex-end',
+  },
+  desktopTwoColGrid: {
+    flexDirection: 'row',
+    gap: theme.spacing.lg,
+  },
+  desktopCol: {
+    flex: 1,
+  },
+  desktopFooter: {
+    marginTop: theme.spacing.xl,
+    paddingVertical: theme.spacing.lg,
+  },
+
+  // Mobile Structure
+  mobileOuterWrapper: {
+    flex: 1,
     alignItems: 'center',
-    marginTop: theme.spacing.lg,
   },
-  sectionSubtitle: {
-    marginTop: theme.spacing.xxs,
-    marginBottom: theme.spacing.ms,
+  mobileScrollView: {
+    width: '100%',
+    maxWidth: theme.layout.phonePreviewWidth,
   },
-  componentCard: {
+  mobileContentContainer: {
+    paddingBottom: theme.spacing.xxxl,
+  },
+  mobileHeroCard: {
     padding: theme.spacing.md,
     borderRadius: theme.radius.xl,
     marginBottom: theme.spacing.md,
+  },
+  mobileQuickNav: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+    marginTop: theme.spacing.ms,
+  },
+  mobileFooter: {
+    marginTop: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
+  },
+
+  // Shared Component Blocks
+  componentCard: {
+    padding: theme.spacing.md,
+    borderRadius: theme.radius.xl,
+    marginBottom: theme.spacing.lg,
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: theme.spacing.ms,
   },
   testControlsRow: {
     flexDirection: 'row',
@@ -647,12 +1002,11 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.sm,
     letterSpacing: 0.8,
   },
-  buttonStack: {
+  buttonGrid: {
     gap: theme.spacing.sm,
   },
   sizesRow: {
     flexDirection: 'row',
-    alignItems: 'center',
     flexWrap: 'wrap',
     gap: theme.spacing.sm,
   },
@@ -661,11 +1015,17 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: theme.spacing.sm,
   },
-  cardGrid: {
-    gap: theme.spacing.ms,
-    marginBottom: theme.spacing.md,
+  cardsRowDesktop: {
+    flexDirection: 'row',
+    gap: theme.spacing.md,
+    marginTop: theme.spacing.sm,
   },
-  cardItem: {
+  cardsStackMobile: {
+    gap: theme.spacing.ms,
+    marginTop: theme.spacing.sm,
+  },
+  cardVariantItem: {
+    flex: 1,
     padding: theme.spacing.md,
     borderRadius: theme.radius.lg,
   },
@@ -673,14 +1033,15 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.sm,
     marginBottom: theme.spacing.xxs,
   },
-  debitCardWrapper: {
+  debitCardFrame: {
     marginVertical: theme.spacing.xs,
   },
-  currencySlider: {
+  currencyRail: {
     paddingRight: theme.spacing.md,
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.sm,
   },
-  actionsBarRow: {
+  actionsBar: {
+    padding: theme.spacing.md,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -688,11 +1049,18 @@ const styles = StyleSheet.create({
   rowDivider: {
     borderTopWidth: 1,
   },
-  typeSample: {
-    marginBottom: theme.spacing.ms,
+  typeGridDesktop: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing.md,
+    marginTop: theme.spacing.sm,
   },
-  footer: {
-    marginTop: theme.spacing.xl,
-    marginBottom: theme.spacing.lg,
+  typeStackMobile: {
+    gap: theme.spacing.sm,
+    marginTop: theme.spacing.sm,
+  },
+  typeBlock: {
+    minWidth: 200,
+    marginBottom: theme.spacing.sm,
   },
 });
