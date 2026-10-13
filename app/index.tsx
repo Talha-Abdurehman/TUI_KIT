@@ -2,6 +2,7 @@
  * Author: Talha Abdurehman <talhakyle124@gmail.com>
  * Responsive Component Showcase - Full Desktop & Mobile Workbenches
  * Zero arbitrary values, 100% token-driven design system with Hermes performance.
+ * Demonstrates all 14 UI Kit atomic & composite primitives.
  */
 
 import React, { useState } from 'react';
@@ -16,17 +17,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme, useResponsive, useTheme } from '@/theme';
 import {
   ActionCircleButton,
+  Avatar,
   Badge,
   Button,
   Card,
   CurrencyCard,
   DebitCardVisual,
   Input,
+  ProgressBar,
+  SegmentedControl,
+  SettingRow,
   Text,
+  Timeline,
   TransactionRow,
 } from '@/components';
 
 type ViewMode = 'auto' | 'desktop' | 'mobile';
+type DemoCategory = 'all' | 'buttons' | 'forms' | 'cards' | 'fintech' | 'feedback';
 
 export default function ResponsiveShowcaseScreen() {
   const router = useRouter();
@@ -47,9 +54,15 @@ export default function ResponsiveShowcaseScreen() {
   const [cardVariant, setCardVariant] = useState<'lime' | 'forest'>('lime');
   const [inputValue, setInputValue] = useState('');
   const [inputError, setInputError] = useState('');
-  const [activeNavSection, setActiveNavSection] = useState('all');
+  const [activeCategory, setActiveCategory] = useState<DemoCategory>('all');
+  const [demoSwitch1, setDemoSwitch1] = useState(true);
+  const [demoSwitch2, setDemoSwitch2] = useState(false);
+  const [demoSegment, setDemoSegment] = useState('daily');
 
-  // Shared Component Sections
+  // =========================================================================
+  // SHARED COMPONENT SECTIONS
+  // =========================================================================
+
   const renderButtonsSection = () => (
     <Card variant="outlined" style={styles.componentCard}>
       <View style={styles.sectionHeaderRow}>
@@ -301,12 +314,134 @@ export default function ResponsiveShowcaseScreen() {
     </View>
   );
 
+  const renderAvatarsSection = () => (
+    <Card variant="outlined" style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            5. Avatar Primitive
+          </Text>
+          <Text variant="caption" color="textMuted">
+            Automatic initials extraction, custom icon slots, and 4 size presets
+          </Text>
+        </View>
+      </View>
+
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        SIZE PRESETS (SM: 32, MD: 38, LG: 44, XL: 56)
+      </Text>
+      <View style={styles.avatarRow}>
+        <Avatar name="Talha Abdurehman" size="sm" />
+        <Avatar name="Talha Abdurehman" size="md" />
+        <Avatar name="Talha Abdurehman" size="lg" />
+        <Avatar name="Talha Abdurehman" size="xl" />
+      </View>
+
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        VARIANTS & ICON FALLBACKS
+      </Text>
+      <View style={styles.avatarRow}>
+        <Avatar name="Talha Abdurehman" variant="primary" size="lg" />
+        <Avatar name="Sarah Jenkins" variant="subtle" size="lg" />
+        <Avatar name="Alex Rivera" variant="outline" size="lg" />
+        <Avatar icon={<Text variant="bodyBold">🇬🇧</Text>} size="lg" />
+        <Avatar icon={<Text variant="bodyBold">💳</Text>} variant="primary" size="lg" />
+      </View>
+    </Card>
+  );
+
+  const renderFeedbackAndControlsSection = () => (
+    <Card variant="outlined" style={styles.componentCard}>
+      <View style={styles.sectionHeaderRow}>
+        <View>
+          <Text variant="titleSm" color="textPrimary">
+            6. Feedback, Controls & Progress
+          </Text>
+          <Text variant="caption" color="textMuted">
+            ProgressBar, SettingRow switches, Timeline step-tracker, and SegmentedControl
+          </Text>
+        </View>
+      </View>
+
+      {/* Segmented Control Demo */}
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        SEGMENTED CONTROL
+      </Text>
+      <SegmentedControl
+        items={[
+          { key: 'daily', label: 'Daily' },
+          { key: 'weekly', label: 'Weekly' },
+          { key: 'monthly', label: 'Monthly' },
+        ]}
+        value={demoSegment}
+        onChange={setDemoSegment}
+      />
+
+      {/* Progress Bars */}
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        PROGRESS BARS (SEMANTIC FILL VARIANTS)
+      </Text>
+      <View style={styles.progressStack}>
+        <ProgressBar label="Account Limit (Primary)" valueText="£450 / £3,000" progress={15} variant="primary" />
+        <ProgressBar label="Monthly Savings (Success)" valueText="85%" progress={85} variant="success" />
+        <ProgressBar label="ATM Quota (Warning)" valueText="65%" progress={65} variant="warning" />
+      </View>
+
+      {/* Setting Rows */}
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        SETTING ROWS (ACCESSIBLE SWITCHES)
+      </Text>
+      <View style={[styles.settingBox, { backgroundColor: colors.surfaceSubtle, borderRadius: radius.lg }]}>
+        <SettingRow
+          title="Push Notifications"
+          subtitle="Real-time instant spend and transfer alerts"
+          value={demoSwitch1}
+          onValueChange={setDemoSwitch1}
+        />
+        <SettingRow
+          title="Biometric Face ID"
+          subtitle="Require Face ID authentication before sending"
+          value={demoSwitch2}
+          onValueChange={setDemoSwitch2}
+          hasDivider={true}
+        />
+      </View>
+
+      {/* Timeline Tracker */}
+      <Text variant="captionMedium" color="textMuted" style={styles.subHeading}>
+        TIMELINE STEP TRACKER
+      </Text>
+      <Timeline
+        steps={[
+          {
+            id: '1',
+            title: 'Transfer initiated',
+            description: 'Funds received from primary debit card',
+            status: 'completed',
+          },
+          {
+            id: '2',
+            title: 'Converting GBP → EUR',
+            description: 'Guaranteed rate locked at 1.1742',
+            status: 'completed',
+          },
+          {
+            id: '3',
+            title: 'Dispatched to Deutsche Bank',
+            description: 'Estimated delivery today by 17:00 UTC',
+            status: 'active',
+          },
+        ]}
+      />
+    </Card>
+  );
+
   const renderDebitCardSection = () => (
     <Card variant="outlined" style={styles.componentCard}>
       <View style={styles.sectionHeaderRow}>
         <View>
           <Text variant="titleSm" color="textPrimary">
-            5. Debit Card Visual
+            7. Debit Card Visual Primitive
           </Text>
           <Text variant="caption" color="textMuted">
             ISO 1.586 aspect ratio, EMV chip, and contactless waves
@@ -347,7 +482,7 @@ export default function ResponsiveShowcaseScreen() {
       <View style={styles.sectionHeaderRow}>
         <View>
           <Text variant="titleSm" color="textPrimary">
-            6. Currency Rail & Action Bar
+            8. Currency Rail & Action Bar
           </Text>
           <Text variant="caption" color="textMuted">
             Horizontal balance cards & 52pt circular action triggers
@@ -423,7 +558,7 @@ export default function ResponsiveShowcaseScreen() {
       <View style={styles.sectionHeaderRow}>
         <View>
           <Text variant="titleSm" color="textPrimary">
-            7. Transaction Rows
+            9. Transaction Rows
           </Text>
           <Text variant="caption" color="textMuted">
             Avatar slot, category metadata, badges, and debit/credit status
@@ -472,7 +607,7 @@ export default function ResponsiveShowcaseScreen() {
       <View style={styles.sectionHeaderRow}>
         <View>
           <Text variant="titleSm" color="textPrimary">
-            8. Typography Presets
+            10. Typography Presets
           </Text>
           <Text variant="caption" color="textMuted">
             12 typography presets strictly bound to theme contract
@@ -536,60 +671,18 @@ export default function ResponsiveShowcaseScreen() {
           />
         </View>
 
-        {/* Viewport Mode Switcher */}
+        {/* Viewport Mode Switcher Using SegmentedControl */}
         <View style={styles.topBarRight}>
-          <View style={[styles.modeSwitcher, { backgroundColor: colors.surfaceSubtle, borderColor: colors.borderSubtle }]}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Desktop View"
-              onPress={() => setViewMode('desktop')}
-              style={[
-                styles.modeButton,
-                isDesktop && [styles.modeButtonActive, { backgroundColor: colors.surface }],
-              ]}
-            >
-              <Text
-                variant="captionMedium"
-                style={{ color: isDesktop ? colors.textPrimary : colors.textMuted }}
-              >
-                🖥️ Desktop
-              </Text>
-            </Pressable>
-
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Mobile View"
-              onPress={() => setViewMode('mobile')}
-              style={[
-                styles.modeButton,
-                !isDesktop && [styles.modeButtonActive, { backgroundColor: colors.surface }],
-              ]}
-            >
-              <Text
-                variant="captionMedium"
-                style={{ color: !isDesktop ? colors.textPrimary : colors.textMuted }}
-              >
-                📱 Mobile
-              </Text>
-            </Pressable>
-
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Auto Responsive"
-              onPress={() => setViewMode('auto')}
-              style={[
-                styles.modeButton,
-                viewMode === 'auto' && [styles.modeButtonActive, { backgroundColor: colors.primary }],
-              ]}
-            >
-              <Text
-                variant="captionMedium"
-                style={{ color: viewMode === 'auto' ? colors.primaryForeground : colors.textMuted }}
-              >
-                ⚡ Auto
-              </Text>
-            </Pressable>
-          </View>
+          <SegmentedControl<ViewMode>
+            items={[
+              { key: 'desktop', label: '🖥️ Desktop' },
+              { key: 'mobile', label: '📱 Mobile' },
+              { key: 'auto', label: '⚡ Auto' },
+            ]}
+            value={viewMode}
+            onChange={setViewMode}
+            style={styles.headerSegmented}
+          />
 
           {/* Quick Demo App Links */}
           <Button
@@ -615,60 +708,65 @@ export default function ResponsiveShowcaseScreen() {
           {/* Desktop Left Sidebar */}
           <View style={[styles.desktopSidebar, { backgroundColor: colors.surface, borderRightColor: colors.borderSubtle }]}>
             <Text variant="captionMedium" color="textMuted" style={styles.sidebarHeader}>
-              NAVIGATION
+              14 KIT PRIMITIVES
             </Text>
 
-            <Pressable
-              onPress={() => setActiveNavSection('all')}
-              style={[
-                styles.sidebarItem,
-                activeNavSection === 'all' && { backgroundColor: colors.surfaceSubtle },
-              ]}
-            >
-              <Text variant="bodySmMedium" color={activeNavSection === 'all' ? 'textPrimary' : 'textSecondary'}>
-                ✦ All Primitives
-              </Text>
-            </Pressable>
-
-            <Pressable
-              onPress={() => router.push('/showcase/button' as any)}
-              style={styles.sidebarItem}
-            >
-              <Text variant="bodySm" color="textSecondary">🔘 Buttons</Text>
-              <Badge label="5" variant="secondary" size="sm" />
-            </Pressable>
-
-            <Pressable
-              onPress={() => router.push('/showcase/badge' as any)}
-              style={styles.sidebarItem}
-            >
-              <Text variant="bodySm" color="textSecondary">🏷️ Badges</Text>
-              <Badge label="7" variant="secondary" size="sm" />
-            </Pressable>
-
-            <Pressable
-              onPress={() => router.push('/showcase/input' as any)}
-              style={styles.sidebarItem}
-            >
-              <Text variant="bodySm" color="textSecondary">📝 Inputs</Text>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">🔘 Button</Text>
+              <Badge label="Core" variant="primary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">🏷️ Badge</Text>
+              <Badge label="7 types" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">📝 Input</Text>
               <Badge label="Forms" variant="secondary" size="sm" />
-            </Pressable>
-
-            <Pressable
-              onPress={() => router.push('/showcase/card' as any)}
-              style={styles.sidebarItem}
-            >
-              <Text variant="bodySm" color="textSecondary">🗂️ Cards</Text>
-              <Badge label="3" variant="secondary" size="sm" />
-            </Pressable>
-
-            <Pressable
-              onPress={() => router.push('/showcase/typography' as any)}
-              style={styles.sidebarItem}
-            >
-              <Text variant="bodySm" color="textSecondary">🔤 Typography</Text>
-              <Badge label="12" variant="secondary" size="sm" />
-            </Pressable>
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">🗂️ Card</Text>
+              <Badge label="3 types" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">👤 Avatar</Text>
+              <Badge label="4 sizes" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">📊 ProgressBar</Text>
+              <Badge label="Feedback" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">⚙️ SettingRow</Text>
+              <Badge label="Switch" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">⏳ Timeline</Text>
+              <Badge label="Steps" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">🎛️ SegmentedControl</Text>
+              <Badge label="Tabs" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">💳 DebitCardVisual</Text>
+              <Badge label="Fintech" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">💱 CurrencyCard</Text>
+              <Badge label="Fintech" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">⚡ ActionCircle</Text>
+              <Badge label="Triggers" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">🧾 TransactionRow</Text>
+              <Badge label="Feed" variant="secondary" size="sm" />
+            </View>
+            <View style={styles.sidebarItem}>
+              <Text variant="bodySmMedium" color="textPrimary">🔤 Typography</Text>
+              <Badge label="12 levels" variant="secondary" size="sm" />
+            </View>
 
             {/* Token System Spec Box */}
             <View style={[styles.sidebarTokenBox, { backgroundColor: colors.surfaceSubtle, borderRadius: radius.lg }]}>
@@ -677,6 +775,7 @@ export default function ResponsiveShowcaseScreen() {
               </Text>
               <Text variant="caption" color="textSecondary" style={{ marginTop: spacing.xxs }}>
                 • Zero arbitrary values{'\n'}
+                • 14 Reusable components{'\n'}
                 • 12 Typography presets{'\n'}
                 • 11 Spacing increments{'\n'}
                 • 8 Border radii{'\n'}
@@ -730,7 +829,7 @@ export default function ResponsiveShowcaseScreen() {
                     Design System Component Workbench
                   </Text>
                   <Text variant="body" color="textSecondary">
-                    Deconstructed from Wise design language. Strictly typed, cross-platform React Native for web and mobile.
+                    14 atomic & composite primitives deconstructed from Wise design language.
                   </Text>
                 </View>
                 <View style={styles.heroBadgesCol}>
@@ -748,6 +847,8 @@ export default function ResponsiveShowcaseScreen() {
                 {renderButtonsSection()}
                 {renderBadgesSection()}
                 {renderInputsSection()}
+                {renderAvatarsSection()}
+                {renderFeedbackAndControlsSection()}
               </View>
 
               {/* Right Column: Fintech & Visual Primitives */}
@@ -755,11 +856,11 @@ export default function ResponsiveShowcaseScreen() {
                 {renderDebitCardSection()}
                 {renderFintechPrimitivesSection()}
                 {renderTransactionsSection()}
+                {renderCardsSection()}
               </View>
             </View>
 
-            {/* Full-width Cards & Typography */}
-            {renderCardsSection()}
+            {/* Full-width Typography Hierarchy */}
             {renderTypographySection()}
 
             {/* Desktop Footer */}
@@ -774,6 +875,9 @@ export default function ResponsiveShowcaseScreen() {
           </ScrollView>
         </View>
       ) : (
+        /* ============================================================== */
+        /* MOBILE PHONE LAYOUT (OR MOBILE PREVIEW FRAME)                  */
+        /* ============================================================== */
         <View style={styles.mobileOuterWrapper}>
           <ScrollView
             style={styles.mobileScrollView}
@@ -823,6 +927,8 @@ export default function ResponsiveShowcaseScreen() {
             {renderBadgesSection()}
             {renderInputsSection()}
             {renderCardsSection()}
+            {renderAvatarsSection()}
+            {renderFeedbackAndControlsSection()}
             {renderDebitCardSection()}
             {renderFintechPrimitivesSection()}
             {renderTransactionsSection()}
@@ -866,19 +972,8 @@ const styles = StyleSheet.create({
     gap: theme.spacing.sm,
     flexWrap: 'wrap',
   },
-  modeSwitcher: {
-    flexDirection: 'row',
-    borderRadius: theme.radius.full,
-    borderWidth: 1,
-    padding: theme.spacing.xxs,
-  },
-  modeButton: {
-    paddingHorizontal: theme.spacing.ms,
-    paddingVertical: theme.spacing.xs,
-    borderRadius: theme.radius.full,
-  },
-  modeButtonActive: {
-    shadowOpacity: 0.1,
+  headerSegmented: {
+    minWidth: 260,
   },
 
   // Desktop Structure
@@ -899,13 +994,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: theme.spacing.sm,
+    paddingVertical: theme.spacing.xs,
     paddingHorizontal: theme.spacing.sm,
     borderRadius: theme.radius.md,
     marginBottom: theme.spacing.xxs,
-  },
-  sidebarItemActive: {
-    borderLeftWidth: 2,
   },
   sidebarTokenBox: {
     marginTop: theme.spacing.lg,
@@ -1014,6 +1106,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: theme.spacing.sm,
+  },
+  avatarRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: theme.spacing.md,
+  },
+  progressStack: {
+    gap: theme.spacing.ms,
+  },
+  settingBox: {
+    paddingHorizontal: theme.spacing.md,
+    marginBottom: theme.spacing.md,
   },
   cardsRowDesktop: {
     flexDirection: 'row',

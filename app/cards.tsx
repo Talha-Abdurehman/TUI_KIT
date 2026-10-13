@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
 import { theme, useTheme } from '@/theme';
-import { Badge, Button, Card, DebitCardVisual, Text } from '@/components';
+import { Badge, Button, Card, DebitCardVisual, ProgressBar, SettingRow, Text } from '@/components';
 
 export default function CardsScreen() {
   const { colors, spacing, radius } = useTheme();
@@ -65,47 +65,26 @@ export default function CardsScreen() {
       </Text>
 
       <Card variant="outlined" style={styles.controlsCard}>
-        <View style={styles.controlRow}>
-          <View style={styles.controlText}>
-            <Text variant="bodyBold">Online payments</Text>
-            <Text variant="caption" color="textSecondary">
-              E-commerce, digital subscriptions, and mobile apps
-            </Text>
-          </View>
-          <Switch
-            value={onlineEnabled}
-            onValueChange={setOnlineEnabled}
-            trackColor={{ false: colors.borderSubtle, true: colors.primary }}
-          />
-        </View>
-
-        <View style={[styles.controlRow, styles.divider, { borderTopColor: colors.borderSubtle }]}>
-          <View style={styles.controlText}>
-            <Text variant="bodyBold">ATM cash withdrawals</Text>
-            <Text variant="caption" color="textSecondary">
-              Up to £200/month free worldwide
-            </Text>
-          </View>
-          <Switch
-            value={atmEnabled}
-            onValueChange={setAtmEnabled}
-            trackColor={{ false: colors.borderSubtle, true: colors.primary }}
-          />
-        </View>
-
-        <View style={[styles.controlRow, styles.divider, { borderTopColor: colors.borderSubtle }]}>
-          <View style={styles.controlText}>
-            <Text variant="bodyBold">Contactless & tap payments</Text>
-            <Text variant="caption" color="textSecondary">
-              Physical POS chip & NFC readers
-            </Text>
-          </View>
-          <Switch
-            value={contactlessEnabled}
-            onValueChange={setContactlessEnabled}
-            trackColor={{ false: colors.borderSubtle, true: colors.primary }}
-          />
-        </View>
+        <SettingRow
+          title="Online payments"
+          subtitle="E-commerce, digital subscriptions, and mobile apps"
+          value={onlineEnabled}
+          onValueChange={setOnlineEnabled}
+        />
+        <SettingRow
+          title="ATM cash withdrawals"
+          subtitle="Up to £200/month free worldwide"
+          value={atmEnabled}
+          onValueChange={setAtmEnabled}
+          hasDivider={true}
+        />
+        <SettingRow
+          title="Contactless & tap payments"
+          subtitle="Physical POS chip & NFC readers"
+          value={contactlessEnabled}
+          onValueChange={setContactlessEnabled}
+          hasDivider={true}
+        />
       </Card>
 
       {/* Spending Limits Card */}
@@ -113,17 +92,12 @@ export default function CardsScreen() {
         Monthly spending limit
       </Text>
       <Card variant="flat" style={styles.limitsCard}>
-        <View style={styles.limitHeader}>
-          <Text variant="bodySmMedium" color="textSecondary">
-            Spent this month
-          </Text>
-          <Text variant="bodyBold">£450 / £3,000</Text>
-        </View>
-
-        {/* Progress bar */}
-        <View style={[styles.progressTrack, { backgroundColor: colors.surfaceHover }]}>
-          <View style={[styles.progressFill, { backgroundColor: colors.primaryDark }]} />
-        </View>
+        <ProgressBar
+          label="Spent this month"
+          valueText="£450 / £3,000"
+          progress={15}
+          variant="primary"
+        />
 
         <Text variant="caption" color="textMuted" style={{ marginTop: spacing.sm }}>
           Resets on the 1st of every month

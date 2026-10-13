@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { theme, useTheme } from '@/theme';
-import { Badge, Button, Card, Input, Text } from '@/components';
+import { Avatar, Badge, Button, Card, Input, Text } from '@/components';
 
 export default function RecipientsScreen() {
   const { colors, spacing, radius } = useTheme();
@@ -93,11 +93,12 @@ export default function RecipientsScreen() {
       </Text>
       <Card variant="outlined" style={styles.myAccountCard}>
         <View style={styles.recipientRow}>
-          <View style={[styles.avatarCircle, { backgroundColor: colors.primary }]}>
-            <Text variant="bodyBold" style={{ color: colors.primaryForeground }}>
-              TA
-            </Text>
-          </View>
+          <Avatar
+            name="Talha Abdurehman"
+            variant="primary"
+            size="lg"
+            style={styles.avatarSpacing}
+          />
           <View style={styles.recipientInfo}>
             <Text variant="bodyBold">Talha Abdurehman (Primary)</Text>
             <Text variant="caption" color="textSecondary">
@@ -124,9 +125,11 @@ export default function RecipientsScreen() {
               pressed && styles.pressed,
             ]}
           >
-            <View style={[styles.avatarCircle, { backgroundColor: colors.surfaceHover }]}>
-              <Text variant="titleSm">{item.flag}</Text>
-            </View>
+            <Avatar
+              icon={<Text variant="titleSm">{item.flag}</Text>}
+              size="lg"
+              style={styles.avatarSpacing}
+            />
 
             <View style={styles.recipientInfo}>
               <Text variant="bodyBold" color="textPrimary">
@@ -184,6 +187,9 @@ const styles = StyleSheet.create({
     borderRadius: theme.layout.avatarLg / 2,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: theme.spacing.ms,
+  },
+  avatarSpacing: {
     marginRight: theme.spacing.ms,
   },
   recipientInfo: {

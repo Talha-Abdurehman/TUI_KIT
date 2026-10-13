@@ -12,3 +12,8 @@ export * from './ui/CurrencyCard';
 export * from './ui/ActionCircleButton';
 export * from './ui/TransactionRow';
 export * from './ui/DebitCardVisual';
+export * from './ui/Avatar';
+export * from './ui/ProgressBar';
+export * from './ui/SettingRow';
+export * from './ui/Timeline';
+export * from './ui/SegmentedControl';

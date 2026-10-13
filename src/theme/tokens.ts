@@ -351,6 +351,8 @@ export const layout = {
   avatarSm: 32,
   avatarMd: 38,
   avatarLg: 44,
+  avatarXl: 56,
+  segmentedControlHeight: 36,
   // Currency card
   currencyCardWidth: 156,
   currencyCardHeight: 160,

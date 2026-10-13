@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { theme, useTheme } from '@/theme';
-import { Badge, Button, Card, Input, Text } from '@/components';
+import { Badge, Button, Card, Input, Text, Timeline } from '@/components';
 
 export default function PaymentsScreen() {
   const { colors, spacing, radius } = useTheme();
@@ -114,28 +114,28 @@ export default function PaymentsScreen() {
         </View>
 
         {/* Timeline Steps */}
-        <View style={styles.timeline}>
-          <View style={styles.timelineStep}>
-            <View style={[styles.stepDot, { backgroundColor: colors.primaryDark }]} />
-            <Text variant="captionMedium" color="textPrimary">
-              1. Money received
-            </Text>
-          </View>
-          <View style={[styles.stepLine, { backgroundColor: colors.primaryDark }]} />
-          <View style={styles.timelineStep}>
-            <View style={[styles.stepDot, { backgroundColor: colors.primaryDark }]} />
-            <Text variant="captionMedium" color="textPrimary">
-              2. Converted at guaranteed rate
-            </Text>
-          </View>
-          <View style={[styles.stepLine, { backgroundColor: colors.borderSubtle }]} />
-          <View style={styles.timelineStep}>
-            <View style={[styles.stepDot, { backgroundColor: colors.surfaceHover }]} />
-            <Text variant="captionMedium" color="textMuted">
-              3. Sending to recipient bank (est. 2 hrs)
-            </Text>
-          </View>
-        </View>
+        <Timeline
+          steps={[
+            {
+              id: '1',
+              title: '1. Money received',
+              description: 'Funds cleared into holding account',
+              status: 'completed',
+            },
+            {
+              id: '2',
+              title: '2. Converted at guaranteed rate',
+              description: 'Rate locked at 1 GBP = 1.1742 EUR',
+              status: 'completed',
+            },
+            {
+              id: '3',
+              title: '3. Sending to recipient bank',
+              description: 'Estimated delivery in 2 hours',
+              status: 'pending',
+            },
+          ]}
+        />
       </Card>
     </ScrollView>
   );
