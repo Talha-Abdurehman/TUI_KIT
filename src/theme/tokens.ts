@@ -379,6 +379,42 @@ export const layout = {
   phonePreviewWidth: 393,
   phonePreviewHeight: 852,
   typeSpecimenMinWidth: 200,
+  // Form Controls
+  checkboxSize: 22,
+  checkboxRadius: 6,
+  radioSize: 22,
+  radioDotSize: 10,
+  switchWidth: 48,
+  switchHeight: 28,
+  switchThumbSize: 22,
+  sliderTrackHeight: 6,
+  sliderThumbSize: 24,
+  otpBoxSize: 48,
+  // Overlays & Sheets
+  modalMaxWidth: 400,
+  bottomSheetMaxHeight: 520,
+  bottomSheetDragHandleWidth: 36,
+  bottomSheetDragHandleHeight: 4,
+  toastHeight: 48,
+  toastMaxWidth: 380,
+  // Loaders & Indicators
+  spinnerSm: 20,
+  spinnerMd: 28,
+  spinnerLg: 40,
+  dividerThickness: 1,
+  tabHeight: 44,
+  // Display & Keypad
+  keypadKeyHeight: 64,
+  keypadKeyWidth: 90,
+  emptyStateIconSize: 64,
+  circularProgressSize: 64,
+  circularProgressStroke: 6,
+} as const;
+
+export const animation = {
+  quick: 150,
+  normal: 250,
+  slow: 400,
 } as const;
 
 export const breakpoints = {
@@ -401,3 +437,4 @@ export type TypographyPresetKey = keyof typeof typography.presets;
 export type ShadowKey = keyof typeof shadows;
 export type LayoutKey = keyof typeof layout;
 export type BreakpointKey = keyof typeof breakpoints;
+export type AnimationKey = keyof typeof animation;

@@ -8,6 +8,7 @@
 
 import { useColorScheme, useWindowDimensions } from 'react-native';
 import {
+  animation,
   breakpoints,
   darkColors,
   hitSlop,
@@ -32,6 +33,7 @@ export const lightTheme = {
   shadows,
   layout,
   breakpoints,
+  animation,
   hitSlop,
 };
 
@@ -44,6 +46,7 @@ export const darkTheme = {
   shadows,
   layout,
   breakpoints,
+  animation,
   hitSlop,
 };
 
@@ -86,6 +89,7 @@ export const theme = lightTheme;
 
 export type Theme = typeof lightTheme;
 export type {
+  AnimationKey,
   BreakpointKey,
   LayoutKey,
   RadiusKey,
@@ -96,6 +100,7 @@ export type {
 } from './tokens';
 
 export {
+  animation,
   breakpoints,
   darkColors,
   hitSlop,
